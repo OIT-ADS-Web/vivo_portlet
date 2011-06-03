@@ -15,10 +15,10 @@ _UNDER CONSTRUCTION! READ INSTRUCTIONS CAREFULLY. ALL MAY NOT BE FUNCTIONAL YET.
 
 ### Download
 
-Releases (**right-click to download**):
+Releases - **please right-click to download**
 
-* [portlet with working search but no persistence][rel2011-05-26]
-* [portlet current - search not working][rel2011-06-03]
+* [2011-06-03 - current - search not working][rel2011-06-03]
+* [2011-05-26 - working search but no persistence][rel2011-05-26]
 
 ### Configuration
 
@@ -36,8 +36,8 @@ In Liferay 6.0.6, login and go to Add->More...->Sample->Vivo->Add. Note if you c
 
 Informal development releases:
 
-* 2011-05-26 - working search but no persistence
 * 2011-06-03 - current - search not working
+* 2011-05-26 - working search but no persistence
 
 ### License
 
