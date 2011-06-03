@@ -1,0 +1,95 @@
+vivoSearchResult({
+    "numFound": 17,
+    "groups": {
+        "publications": 14,
+        "organizations": 2,
+        "activities": 1,
+        "locations": 1
+    },
+    "items": [{
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/jou3664",
+        "name": "Food and Drug Law Journal",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3066",
+        "name": "Food borne disease outbreaks in the United States, 1973",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3099",
+        "name": "Food borne botulism in the United States, 1970 to 1975",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3108",
+        "name": "Clinical features of types A and B food-borne botulism",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/n7290",
+        "name": "Robert Wood Johnson Foundation",
+        "group": "organizations"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/n7053",
+        "name": "health disparities/income",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub7",
+        "name": "Mandatory menu labeling in one fast-food chain in king county, Washington",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3446",
+        "name": "The emerging role of the Food and Drug administration in pharmacoeconomic evaluation during the drug development process",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3519",
+        "name": "The role of the food and drug administration in pharmacoeconomic evaluation during the drug development process",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub122",
+        "name": "Might an overweight waitress make you eat more? How the body type of others is sufficient to alter our food consumption",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub121",
+        "name": "I'll have what she's having: Effects of social influence and body type on the food choices of others",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/n1047",
+        "name": "A Comparison of Food Purchasing Behavior Between Higher and Lower Income Households",
+        "group": "activities"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/n6778",
+        "name": "chronic diseases/obesity",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3136",
+        "name": "Work Group III: Methodologic Issues in Research on the Food and Physical Activity Environments. Addressing Data Complexity",
+        "group": "publications"
+    },
+    {
+        "uri": "http://aims.fao.org/aos/geopolitical.owl#United_States_of_America",
+        "name": "the United States of America",
+        "group": "locations"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/pub3664",
+        "name": "Using medicare administrative data to conduct postmarketing surveillance of follow-on biologics: Issues and opportunities",
+        "group": "publications"
+    },
+    {
+        "uri": "https://scholars-pilot.oit.duke.edu/individual/org50327916",
+        "name": "Global Health Institute",
+        "group": "organizations"
+    }]
+});
+

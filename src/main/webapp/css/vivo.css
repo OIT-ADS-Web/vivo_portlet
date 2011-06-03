@@ -1,0 +1,137 @@
+/*author: Jeremy Bandini*/
+
+p {
+	margin:0;
+	padding:2px;
+}
+
+li {
+	border-bottom:solid 1px #CCC;
+	list-style-type:none;
+	padding:10px;
+}
+
+ul {
+	margin:0;
+	padding:0;
+}
+
+h4 {
+	font-size:1.2em;
+	margin:0;
+	padding:0;
+}
+
+#searchContainer {
+	background-image:url(http://static.calendar.duke.edu/vivo_social/headerbg.gif);
+	border-bottom:solid 2px #FFF;
+	color:#FFF;
+	padding:0 0 7px 7px;
+}
+
+#showSearch,#hideSearch,#refreshHistory,#clearAllHistory {
+	-moz-border-radius-bottomleft:9px;
+	background-color:#FFF;
+	border-bottom:solid 1px #2485AE;
+	border-bottom-left-radius:8px;
+	border-left:solid 1px #2485AE;
+	color:#2485AE;
+	cursor:pointer;
+	float:right;
+	font-weight:700;
+	opacity:0.6;
+	padding:4px;
+}
+
+#clearAllHistory {
+	-moz-border-radius-bottomright:9px;
+	border-bottom-right-radius:8px;
+}
+
+#search,#history {
+	font-size:.8em;
+}
+
+a {
+	color:#2485AE;
+	margin-right:20px;
+	text-decoration:none;
+}
+
+a:visited {
+	color:#2485AE;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+
+#main {
+	background-color:#F3F3F0;
+}
+
+.read_list {
+	display:block;
+	float:right;
+	padding:6px;
+}
+
+.unread {
+	font-weight:700;
+}
+
+#readHistory,#searchHistory {
+	font-size:1em;
+}
+
+#results_header,.header {
+	-moz-border-radius-bottomleft:8px;
+	-moz-border-radius-bottomright:8px;
+	background-image:url(http://static.calendar.duke.edu/vivo_social/headerbg.gif);
+	border-bottom-left-radius:8px;
+	border-bottom-right-radius:8px;
+	color:#FFF;
+	font-size:1.1em;
+}
+
+.tablib_unselected {
+	background-color:#85C13D;
+	background-image:url(http://static.calendar.duke.edu/vivo_social/taboff.gif);
+	border:none;
+	color:#FFF;
+	cursor:pointer;
+	padding:3px 0;
+	width:80px;
+}
+
+.tablib_selected {
+	background-image:url(http://static.calendar.duke.edu/vivo_social/tab.gif);
+	border:none;
+	border-bottom-width:0;
+	color:#FFF;
+	cursor:default;
+	font-weight:700;
+	padding:3px 0;
+	width:80px;
+}
+
+.group {
+	border-bottom:solid 2px #CCC;
+	font-size:1.1em;
+	font-weight:700;
+}
+
+.result_summary {
+	font-size:.9em;
+	font-weight:400;
+}
+
+#result_summary_container li {
+	border:none;
+	display:inline;
+}
+
+.summary_header {
+	display:block;
+	font-weight:700;
+}
