@@ -15,7 +15,8 @@ _UNDER CONSTRUCTION! READ INSTRUCTIONS CAREFULLY. ALL MAY NOT BE FUNCTIONAL YET.
 
 ### Download
 
-Releases:
+Releases (**right-click to download**):
+
 * [portlet with working search but no persistence][rel2011-05-26]
 * [portlet current - search not working][rel2011-06-03]
 
