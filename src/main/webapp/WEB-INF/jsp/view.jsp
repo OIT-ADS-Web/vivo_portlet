@@ -1,6 +1,6 @@
 <%--
 * @author Jeremy Bandini
-* @author Gary S. Weaver (adaptation to portlet only)
+* @author Gary S. Weaver
 --%>
 <%@ page contentType="text/html" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -150,11 +150,178 @@
   	display:block;
   	font-weight:700;
   }
+
+  /* */
+  .selectBoxArrow{
+	margin-top:1px;
+	float:left;
+	position:absolute;
+	right:1px;
+}
+
+.selectBoxInput{
+	border:0px;
+	padding-left:1px;
+	height:16px;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
+.selectBox{
+	border:1px solid #7f9db9;
+	height:20px;
+
+}
+
+.selectBoxOptionContainer{
+	position:absolute;
+	border:1px solid #7f9db9;
+	height:100px;
+	background-color:#FFF;
+	left:-1px;
+	top:20px;
+	visibility:hidden;
+	overflow:auto;
+}
+
+.selectBoxAnOption{
+	font-family:arial;
+	font-size:12px;
+	cursor:default;
+	margin:1px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+
+.selectBoxIframe{
+	position:absolute;
+	background-color:#FFF;
+	border:0px;
+	z-index:999;
+}
   </style>
-  <script src="<%=request.getContextPath()%>/js/jquery.min.1.4.3.js" type="text/javascript">
-  </script>
-  <script src="<%=request.getContextPath()%>/js/jquery-ui.min.1.8.6.js" type="text/javascript">
-  </script>
+  	<script src="<%=request.getContextPath()%>/js/jquery-1.5.1.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.core.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.widget.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.button.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.position.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.autocomplete.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/index.css" media="all">
+
+	<script>
+	(function( $ ) {
+		$.widget( "ui.combobox", {
+			_create: function() {
+				var self = this,
+					select = this.element.hide(),
+					selected = select.children( ":selected" ),
+					value = selected.val() ? selected.text() : "";
+				var input = this.input = $( "<input>" )
+					.insertAfter( select )
+					.val( value )
+					.autocomplete({
+						delay: 0,
+						minLength: 0,
+						source: function( request, response ) {
+							var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+							response( select.children( "option" ).map(function() {
+								var text = $( this ).text();
+								if ( this.value && ( !request.term || matcher.test(text) ) )
+									return {
+										label: text.replace(
+											new RegExp(
+												"(?![^&;]+;)(?!<[^<>]*)(" +
+												$.ui.autocomplete.escapeRegex(request.term) +
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+											), "<strong>$1</strong>" ),
+										value: text,
+										option: this
+									};
+							}) );
+						},
+						select: function( event, ui ) {
+							ui.item.option.selected = true;
+							self._trigger( "selected", event, {
+								item: ui.item.option
+							});
+						},
+						change: function( event, ui ) {
+							if ( !ui.item ) {
+								var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+									valid = false;
+								select.children( "option" ).each(function() {
+									if ( $( this ).text().match( matcher ) ) {
+										this.selected = valid = true;
+										return false;
+									}
+								});
+								if ( !valid ) {
+									// remove invalid value, as it didn't match anything
+									$( this ).val( "" );
+									select.val( "" );
+									input.data( "autocomplete" ).term = "";
+									return false;
+								}
+							}
+						}
+					})
+					.addClass( "ui-widget ui-widget-content ui-corner-left" );
+
+				input.data( "autocomplete" )._renderItem = function( ul, item ) {
+					return $( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+				};
+
+				this.button = $( "<button type='button'>&nbsp;</button>" )
+					.attr( "tabIndex", -1 )
+					.attr( "title", "Show All Items" )
+					.insertAfter( input )
+					.button({
+						icons: {
+							primary: "ui-icon-triangle-1-s"
+						},
+						text: false
+					})
+					.removeClass( "ui-corner-all" )
+					.addClass( "ui-corner-right ui-button-icon" )
+					.click(function() {
+						// close if already visible
+						if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+							input.autocomplete( "close" );
+							return;
+						}
+
+						// work around a bug (likely same cause as #5265)
+						$( this ).blur();
+
+						// pass empty string as value to search for, displaying all results
+						input.autocomplete( "search", "" );
+						input.focus();
+					});
+			},
+
+			destroy: function() {
+				this.input.remove();
+				this.button.remove();
+				this.element.show();
+				$.Widget.prototype.destroy.call( this );
+			}
+		});
+	})( jQuery );
+
+	$(function() {
+		$( "#combobox" ).combobox();
+		$( "#toggle" ).click(function() {
+			$( "#combobox" ).toggle();
+		});
+	});
+	</script>
+
+
+
   <script type="text/javascript">
 
   // TODO: need to prefix functions, etc. with portlet namespace or is not jsr286 compliant
@@ -164,6 +331,26 @@
    */
   <portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/>
   <portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>
+
+  /** http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/ **/
+
+  var jsonUrl = "<%=renderResponse.encodeURL(vivoGetUrl.toString())%>";
+    $("#<portlet:namespace/>search").submit(function(){
+        var key = $("#<portlet:namespace/>query").val();
+        if (key.length == 0) {
+            $("#<portlet:namespace/>query").focus();
+        } else {
+            $("#<portlet:namespace/>query").attr("selectBoxOptions", ajax_load)
+            $.getJSON(
+                jsonUrl,
+                {key: key},
+                function(json) {
+                    $("#<portlet:namespace/>query").attr("selectBoxOptions", result);
+                }
+            );
+        }
+        return false;
+    });
 
   var _PortletPrefs =
     p_getString: function (key) {
@@ -483,7 +670,30 @@
     <div style="display:none" id="<portlet:namespace/>showSearch">New Search</div>
     <div id="<portlet:namespace/>searchContainer">
       <div id="<portlet:namespace/>hideSearch">Hide</div>
-      <p>Enter Search Term</p><input type="text" name="searchTerm" /> <button id="<portlet:namespace/>searchButton" type="button" name="startSearch">Save</button>
+      <form id="<portlet:namespace/>search">
+      <div class="demo">
+
+<div class="ui-widget">
+	<label>Enter Search Term: </label>
+	<select style="display: none;" id="combobox">
+		<option value="">Select one...</option>
+		<option value="Music">Music</option>
+		<option value="Games">Games</option>
+		<option value="Basketball">Basketball</option>
+		<option value="Theoretical Physics">Theoretical Physics</option>
+		<option value="Monsters">Monsters</option>
+	</select>
+	<input id="<portlet:namespace/>query" value="" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input ui-widget ui-widget-content ui-corner-left">
+	<button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right ui-button-icon" title="Show All Items" tabindex="-1" type="button">
+	<span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
+	<span class="ui-button-text">&nbsp;</span>
+	</button>
+</div>
+<button id="toggle">Show underlying select</button>
+
+</div><!-- End demo -->
+      <button id="<portlet:namespace/>searchButton" type="button" name="startSearch">Search</button>
+      </form>
     </div>
     <div id="<portlet:namespace/>loading" style="display:none"><img src="<%=request.getContextPath()%>/images/ajax-loader.gif" /></div>
     <div>
@@ -505,3 +715,5 @@
 
 <!-- TODO: remove -->
 <a href="<portlet:resourceURL escapeXml='false' id='info'/>">Test portlet resource URL and get stats</a><br/>
+
+<ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
