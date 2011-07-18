@@ -1,14 +1,9 @@
+<!--
 <%--
 * @author Jeremy Bandini
 * @author Gary S. Weaver
---%>
-
-<%--
-NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of build. This is to allow easier testing
-      of the Javascript and HTML outside of the portlet environment. Please use pid_ in place of the portlet namespace
-      throughout this file. Since the JSP tag it replaces pid_ with only works when in a JSP, you cannot separate the
-      CSS and Javascript if it has anything that needs to have the portlet namespace to avoid conflicts with other
-      portlets on the same page!
+* Maven-replacer in pom.xml is used to replace some text in this JSP as part of build. This along with html.sh allows
+* light testing of the Javascript and HTML outside of the portlet environment.
 --%>
 
 <%@ page contentType="text/html" isELIgnored="false" %>
@@ -17,9 +12,9 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+-->
 
-<portlet:defineObjects/>
-<portlet:actionURL var="actionURL" portletMode="view"/>
+<!-- do not remove or move this comment -->
 
 <div class="portlet-container" id="pid_main">
   <style type="text/css">
@@ -47,7 +42,7 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
   }
 
   #pid_searchContainer {
-  	background-image:url(<%=request.getContextPath()%>/images/headerbg.gif);
+  	background-image:url(rcp_/images/headerbg.gif);
   	border-bottom:solid 2px #FFF;
   	color:#FFF;
   	padding:0 0 7px 7px;
@@ -111,7 +106,7 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
   #pid_results_header,.header {
   	-moz-border-radius-bottomleft:8px;
   	-moz-border-radius-bottomright:8px;
-  	background-image:url(<%=request.getContextPath()%>/images/headerbg.gif);
+  	background-image:url(rcp_/images/headerbg.gif);
   	border-bottom-left-radius:8px;
   	border-bottom-right-radius:8px;
   	color:#FFF;
@@ -120,7 +115,7 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 
   .tablib_unselected {
   	background-color:#85C13D;
-  	background-image:url(<%=request.getContextPath()%>/images/taboff.gif);
+  	background-image:url(rcp_/images/taboff.gif);
   	border:none;
   	color:#FFF;
   	cursor:pointer;
@@ -129,7 +124,7 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
   }
 
   .tablib_selected {
-  	background-image:url(<%=request.getContextPath()%>/images/tab.gif);
+  	background-image:url(rcp_/images/tab.gif);
   	border:none;
   	border-bottom-width:0;
   	color:#FFF;
@@ -210,14 +205,14 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 	z-index:999;
 }
   </style>
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui-autocomplete.css" media="all">
+    <link rel="stylesheet" type="text/css" href="rcp_/css/jquery-ui-autocomplete.css" media="all">
 
-  	<script src="<%=request.getContextPath()%>/js/jquery-1.5.1.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.core.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.widget.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.button.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.position.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.autocomplete.js"></script>
+  	<script src="rcp_/js/jquery-1.5.1.js"></script>
+	<script src="rcp_/js/jquery.ui.core.js"></script>
+	<script src="rcp_/js/jquery.ui.widget.js"></script>
+	<script src="rcp_/js/jquery.ui.button.js"></script>
+	<script src="rcp_/js/jquery.ui.position.js"></script>
+	<script src="rcp_/js/jquery.ui.autocomplete.js"></script>
 
 
 	<script type="text/javascript">
@@ -324,9 +319,9 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 	})( jQuery );
 
 	$(function() {
-		$( "#combobox" ).combobox();
-		$( "#toggle" ).click(function() {
-			$( "#combobox" ).toggle();
+		$( "#pid_combobox" ).combobox();
+		$( "#pid_toggle" ).click(function() {
+			$( "#pid_combobox" ).toggle();
 		});
 	});
 	</script>
@@ -340,8 +335,8 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
   /**
    * TODO: Adapter for persistence via portlet that works similar to OpenSocial so we can update semi-easily.
    */
-  <portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/>
-  <portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>
+  var vivoGetUrl = 'replaced_during_packaging_see_pom.xml';
+  var vivoUpdateUrl = 'replaced_during_packaging_see_pom.xml';
 
   /** http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/ */
 
@@ -652,7 +647,7 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 </div><!-- End demo -->
       <button id="pid_searchButton" type="button" name="startSearch">Search</button>
     </div>
-    <div id="pid_loading" style="display:none"><img src="<%=request.getContextPath()%>/images/ajax-loader.gif" /></div>
+    <div id="pid_loading" style="display:none"><img src="rcp_/images/ajax-loader.gif" /></div>
     <div>
       <ul style="display:none" id="pid_results"></ul>
     </div>
@@ -669,8 +664,5 @@ NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of 
 </div>
 
 <br/>
-
-<!-- TODO: remove -->
-<a href="<portlet:resourceURL escapeXml='false' id='info'/>">Test portlet resource URL and get stats</a><br/>
 
 <ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant="ui-active-menuitem" role="listbox" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>

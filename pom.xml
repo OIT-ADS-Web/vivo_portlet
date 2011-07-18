@@ -195,8 +195,13 @@
                     <ignoreMissingFile>false</ignoreMissingFile>
                     <file>target/${portletName}/WEB-INF/jsp/view.jsp</file>
                     <regex>false</regex>
-                    <token>pid_</token>
-                    <value><![CDATA[<portlet:namespace/>]]></value>
+                    <variableTokenValueMap>
+                        pid_=<![CDATA[<portlet:namespace/>]]>,
+                        rcp_=<![CDATA[<%=request.getContextPath()%>]]>,
+                        <![CDATA[var vivoGetUrl = 'replaced_during_packaging_see_pom.xml';]]>=<![CDATA[<portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/>]]>,
+                        <![CDATA[var vivoUpdateUrl = 'replaced_during_packaging_see_pom.xml';]]>=<![CDATA[<portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>]]>,
+                        <![CDATA[<!-- do not remove or move this comment -->]]>=<![CDATA[<portlet:defineObjects/><portlet:actionURL var="actionURL" portletMode="view"/>]]>
+                    </variableTokenValueMap>
                 </configuration>
             </plugin>
         </plugins>
