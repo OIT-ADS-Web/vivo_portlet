@@ -320,9 +320,6 @@
 
 	$(function() {
 		$( "#pid_combobox" ).combobox();
-		$( "#pid_toggle" ).click(function() {
-			$( "#pid_combobox" ).toggle();
-		});
 	});
 	</script>
 
@@ -642,7 +639,6 @@
 	</button>
 </div>
 </form>
-<button id="toggle">Show underlying select</button>
 
 </div><!-- End demo -->
       <button id="pid_searchButton" type="button" name="startSearch">Search</button>
