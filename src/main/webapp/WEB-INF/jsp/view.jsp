@@ -2,6 +2,15 @@
 * @author Jeremy Bandini
 * @author Gary S. Weaver
 --%>
+
+<%--
+NOTE: Maven-replacer used to replace pid_ with the portlet namespace as part of build. This is to allow easier testing
+      of the Javascript and HTML outside of the portlet environment. Please use pid_ in place of the portlet namespace
+      throughout this file. Since the JSP tag it replaces pid_ with only works when in a JSP, you cannot separate the
+      CSS and Javascript if it has anything that needs to have the portlet namespace to avoid conflicts with other
+      portlets on the same page!
+--%>
+
 <%@ page contentType="text/html" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,7 +21,7 @@
 <portlet:defineObjects/>
 <portlet:actionURL var="actionURL" portletMode="view"/>
 
-<div class="portlet-container" id="<portlet:namespace/>main">
+<div class="portlet-container" id="pid_main">
   <style type="text/css">
   /*note: have to do styles inline because of needing to use JSP to insert namespace into CSS element ids*/
   p {
@@ -37,14 +46,14 @@
   	padding:0;
   }
 
-  #<portlet:namespace/>searchContainer {
+  #pid_searchContainer {
   	background-image:url(<%=request.getContextPath()%>/images/headerbg.gif);
   	border-bottom:solid 2px #FFF;
   	color:#FFF;
   	padding:0 0 7px 7px;
   }
 
-  #<portlet:namespace/>showSearch,#<portlet:namespace/>hideSearch,#<portlet:namespace/>refreshHistory,#<portlet:namespace/>clearAllHistory {
+  #pid_showSearch,#pid_hideSearch,#pid_refreshHistory,#pid_clearAllHistory {
   	-moz-border-radius-bottomleft:9px;
   	background-color:#FFF;
   	border-bottom:solid 1px #2485AE;
@@ -58,12 +67,12 @@
   	padding:4px;
   }
 
-  #<portlet:namespace/>clearAllHistory {
+  #pid_clearAllHistory {
   	-moz-border-radius-bottomright:9px;
   	border-bottom-right-radius:8px;
   }
 
-  #<portlet:namespace/>search,#<portlet:namespace/>history {
+  #pid_search,#pid_history {
   	font-size:.8em;
   }
 
@@ -81,7 +90,7 @@
   	text-decoration:underline;
   }
 
-  #<portlet:namespace/>main {
+  #pid_main {
   	background-color:#F3F3F0;
   }
 
@@ -95,11 +104,11 @@
   	font-weight:700;
   }
 
-  #<portlet:namespace/>readHistory,#<portlet:namespace/>searchHistory {
+  #pid_readHistory,#pid_searchHistory {
   	font-size:1em;
   }
 
-  #<portlet:namespace/>results_header,.header {
+  #pid_results_header,.header {
   	-moz-border-radius-bottomleft:8px;
   	-moz-border-radius-bottomright:8px;
   	background-image:url(<%=request.getContextPath()%>/images/headerbg.gif);
@@ -141,7 +150,7 @@
   	font-weight:400;
   }
 
-  #<portlet:namespace/>result_summary_container li {
+  #pid_result_summary_container li {
   	border:none;
   	display:inline;
   }
@@ -201,15 +210,17 @@
 	z-index:999;
 }
   </style>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui-autocomplete.css" media="all">
+
   	<script src="<%=request.getContextPath()%>/js/jquery-1.5.1.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.ui.core.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.ui.widget.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.ui.button.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.ui.position.js"></script>
 	<script src="<%=request.getContextPath()%>/js/jquery.ui.autocomplete.js"></script>
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/index.css" media="all">
 
-	<script>
+
+	<script type="text/javascript">
 	(function( $ ) {
 		$.widget( "ui.combobox", {
 			_create: function() {
@@ -332,107 +343,90 @@
   <portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/>
   <portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>
 
-  /** http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/ **/
+  /** http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/ */
 
-  var jsonUrl = "<%=renderResponse.encodeURL(vivoGetUrl.toString())%>";
-    $("#<portlet:namespace/>search").submit(function(){
-        var key = $("#<portlet:namespace/>query").val();
-        if (key.length == 0) {
-            $("#<portlet:namespace/>query").focus();
-        } else {
-            $("#<portlet:namespace/>query").attr("selectBoxOptions", ajax_load)
-            $.getJSON(
-                jsonUrl,
-                {key: key},
-                function(json) {
-                    $("#<portlet:namespace/>query").attr("selectBoxOptions", result);
-                }
-            );
-        }
-        return false;
-    });
+  /** Spinner **/
 
-  var _PortletPrefs =
-    p_getString: function (key) {
-        $.ajax({
-            type: "GET",
-            url: "<%=renderResponse.encodeURL(vivoGetUrl.toString())%>",
-            data: "key=" + key,
-            success: function(json){
-              alert("get ajax call returned: " + json.data);
-            }
-        });
-    }
+  <div id="pid_loadingDiv">
+  LOADING . . .
+  </div>
 
-    p_set: function (key, value) {
-        $.ajax({
-            type: "POST",
-            url: "<%=renderResponse.encodeURL(vivoUpdateUrl.toString())%>",
-            data: "key="+key"&value="+value,
-            success: function(json){
-              alert("update ajax call returned: " + json.data);
-            }
-        });
-    }
-  }
+  /** TODO: namespace since is portlet, otherwise will get spinner when other portlets calling ajaxStart... http://stackoverflow.com/questions/1191485/how-to-call-ajaxstart-on-specific-ajax-calls/1212728#1212728 */
+  $('#pid_loadingDiv')
+      .hide()  // hide it initially
+      .ajaxStart(function() {
+          $(this).show();
+      })
+      .ajaxStop(function() {
+          $(this).hide();
+      })
+  ;
 
-  /**
-   * app.js from vivo opensocial adapted to portlet
-   *
-   * hide search menu after search X
-   * add section/filters for organization etc... X
-   * scrunch things up X
-   * Read/unread toggle
-   * implement search history X
-   *
-   */
-  //var prefs = new _IG_Prefs();
-  var prefs = _PortletPrefs;
-  //alert('vivoUrl is ${vivoUrl}');
-  var settings = {
-  	currentTerm: '',
-  	endPoint: '${vivoUrl}'
-  };
+
+  /** Persist search history **/
+  function saveSearch(key){
+      if (key.length != 0) {
+          $.getJSON(
+              "<%=renderResponse.encodeURL(vivoUpdateUrl.toString())%>",
+              {key: key},
+              function(json) {
+                  $("#pid_query").val(result);
+              }
+          );
+      }
+      return false;
+  });
+
   function initialize() {
   	//console.log('starting up!');
-  	//tabs = new gadgets.TabSet("vivo_social", "Main");
-  	//tabs.addTab("Search", "search");
-  	//tabs.addTab("History", "history");
-  	//tabs.setSelectedTab("search");
-  	var search_terms = prefs.p_getString("searchList");
-  	//var search_terms = 'music';
-  	var searchTermsArray = search_terms.split('|');
-  	var lastSearch = searchTermsArray.pop();
-  	if(searchTermsArray.length > 0) {
-  		if(lastSearch !== "") {
-  			executeSearch(lastSearch);
-  			settings.currentTerm = lastSearch;
-  		}
-  	}
-  	$('#<portlet:namespace/>searchButton').click( function() {
 
-  		if($('[name=searchTerm]').val() !== "") {
-  			executeSearch($('[name=searchTerm]').val());
-  			saveSearch($('[name=searchTerm]').val());
+  	// 1. load query text field and backing select with history
+    $(document).ready(function(){
+        $.getJSON(
+            "<%=renderResponse.encodeURL(vivoGetUrl.toString())%>",
+            {},
+            function(json) {
+                var searchTermsArray = json.key.split('|');
+  	            var lastSearch = searchTermsArray.pop();
+  	            if(searchTermsArray.length > 0) {
+  	  	          if(lastSearch !== "") {
+  	  		          executeSearch(lastSearch);
+  	  		          settings.currentTerm = lastSearch;
+  	  	          }
+    	        }
+                $("#pid_query").val(json);
+                // $("#pid_query").val(lastSearch);
+                // TODO: loop through array and repopulate select w/id:pid_combobox
+            }
+        );
+
+        return false;
+    })
+
+  	// 2. attach click handler for search
+  	$('#pid_searchButton').click( function() {
+  		if($("#pid_query").val() !== "") {
+  			executeSearch($("#pid_query").val());
+  			saveSearch($("#pid_query").val());
   		}
   	});
-  	$('#<portlet:namespace/>showSearch').click( function() {
+  	$('#pid_showSearch').click( function() {
   		stopSearchAnimations();
   	});
-  	$('#<portlet:namespace/>hideSearch').click( function() {
-  		$('#<portlet:namespace/>searchContainer').hide("slide", {
+  	$('#pid_hideSearch').click( function() {
+  		$('#pid_searchContainer').hide("slide", {
   			direction: "up"
   		}, 150, function() {
-  			$('#<portlet:namespace/>showSearch').show("slide", {
+  			$('#pid_showSearch').show("slide", {
   				direction: "up"
   			}, 150);
 
   		});
   	});
-  	$('#<portlet:namespace/>refreshHistory').click( function() {
+  	$('#pid_refreshHistory').click( function() {
   		updateHistory();
   	});
-  	$('#<portlet:namespace/>clearAllHistory').click( function() {
+  	$('#pid_clearAllHistory').click( function() {
   		clearAllHistory();
   	});
   	$('.read_list').live('change', function() {
@@ -453,7 +447,7 @@
   		saveSearch($(this).html());
   		return false;
   	});
-  	$('#<portlet:namespace/>search input').bind('keydown', function(e) {
+  	$('#pid_search input').bind('keydown', function(e) {
   		var code = (e.keyCode ? e.keyCode : e.which);
   		if(code == 13) { // 13 = user clicked enter/return key in search field
   			if($('[name=searchTerm]').val() !== "") {
@@ -471,23 +465,23 @@
   }
 
   function startSearchAnimations() {
-  	$('#<portlet:namespace/>loading').show("slide", {
+  	$('#pid_loading').show("slide", {
   		direction: "up"
   	}, 50);
-  	$('#<portlet:namespace/>searchContainer').hide("slide", {
+  	$('#pid_searchContainer').hide("slide", {
   		direction: "up"
   	}, 150, function() {
-  		$('#<portlet:namespace/>showSearch').show("slide", {
+  		$('#pid_showSearch').show("slide", {
   			direction: "up"
   		}, 150);
   	});
   }
 
   function stopSearchAnimations() {
-  	$('#<portlet:namespace/>showSearch').hide("slide", {
+  	$('#pid_showSearch').hide("slide", {
   		direction: "up"
   	}, 150, function() {
-  		$('#<portlet:namespace/>searchContainer').show("slide", {
+  		$('#pid_searchContainer').show("slide", {
   			direction: "up"
   		}, 150);
   	});
@@ -516,39 +510,12 @@
   	};
   }
 
-  function saveSearch(search) {
-  	item = search;
-  	var search_terms = prefToArray(prefs.p_getString("searchList"));
-  	//var search_terms = ['music'];
-  	var testResult = scanForDuplicateSearch(item, search_terms);
-  	if(!testResult.result) {
-  		search_terms.push(item); // 1994 character max!
-  		prefs.p_set("searchList", search_terms.join('|'));
-  	} else {
-  		prefs.p_set("searchList", testResult.patchedArray.join('|'));
-  	}
-  	settings.currentTerm = item;
-  }
-
   function searchVivo(search) {
   	loadData(settings.endPoint + search + '*');
   }
 
-  function searchReadList(term) {
-  	//var read_list = prefs.p_getString("readList");
-  	var read_list = 'music';
-  	var readArray = read_list.split('|');
-  	var loopCount = readArray.length;
-  	for(var i=0; i < loopCount; i++) {
-  		if (readArray[i] === term) {
-  			return true;
-  		}
-  	}
-  	return false;
-  }
-
   function sortResults(searchArray, groups) {
-  	var resultsString = ['<ul id="<portlet:namespace/>result_summary_container">'];
+  	var resultsString = ['<ul id="pid_result_summary_container">'];
   	var searchArrayLength = searchArray.length;
   	var filteredResults = {};
   	if($.isEmptyObject(groups)) {
@@ -566,7 +533,6 @@
   	}
   	resultsString.push("</ul>");
   	for(var i=0; i < searchArrayLength; i++) {
-  		//console.log(searchArray[i].group);
   		if(filteredResults[searchArray[i].group]) {
   			filteredResults[searchArray[i].group].push(searchArray[i]);
   		}
@@ -577,32 +543,26 @@
   	}];
 
   	for (var key in groups) {
-  		//	var obj = groups[key];
-  		// alert(prop + " = " + obj[prop]);
   		sortedResults = sortedResults.concat(filteredResults[key]);
-
   	}
-  	//var sortedResults = filteredResults.publications.concat(filteredResults.activities,filteredResults.organizations, filteredResults.people, filteredResults.locations);
   	return sortedResults;
   }
 
   function vivoSearchResult(data) {
-  	$('#<portlet:namespace/>loading').hide("slide", {
+  	$('#pid_loading').hide("slide", {
   		direction: "up"
   	}, 150, function() {
-  		$('#<portlet:namespace/>results').show("slide", {
+  		$('#pid_results').show("slide", {
   			direction: "up"
   		}, 150);
   	});
-  	//console.profile()
   	var search_terms = prefs.p_getString("searchList");
-  	//var search_terms = 'music';
   	var searchArray = search_terms.split('|');
   	var groups = data.groups;
   	var finalArray = sortResults(data.items, groups);
   	var dataItems = finalArray.length;
   	var finalStr = [];
-  	finalStr.push('<li id="<portlet:namespace/>results_header">Search Term: <strong>' + settings.currentTerm + '</strong> Results: <strong>' + dataItems  + '</strong></li>');
+  	finalStr.push('<li id="pid_results_header">Search Term: <strong>' + settings.currentTerm + '</strong> Results: <strong>' + dataItems  + '</strong></li>');
   	for (var i = 0; i < dataItems; i++) {
   		if(finalArray[i].uri !== '#' && finalArray[i].uri !== '#result') {
   			if(!searchReadList(finalArray[i].uri)) {
@@ -614,12 +574,11 @@
   			if(finalArray[i].uri === '#result') {
   				finalStr.push('<li class="group result_summary">' + finalArray[i].name + '</li>');
   			} else {
-  				finalStr.push('<li id="<portlet:namespace/>' + finalArray[i].name + '" class="group">' + finalArray[i].name + '</li>');
+  				finalStr.push('<li id="pid_' + finalArray[i].name + '" class="group">' + finalArray[i].name + '</li>');
   			}
   		}
   	};
-  	$('#<portlet:namespace/>results').html(finalStr.join(" "));
-  	//console.profileEnd()
+  	$('#pid_results').html(finalStr.join(" "));
   }
 
   function prefToArray(pref) {
@@ -647,35 +606,33 @@
   }
 
   function updateHistory() {
-  	$('#<portlet:namespace/>searchHistory').html(renderSearchList(prefToArray(prefs.p_getString("searchList"))).join(" "));
-  	//$('#<portlet:namespace/>searchHistory').html(renderSearchList(prefToArray("")).join(" "));
-  	//$('#<portlet:namespace/>readHistory').html('<h4>Read Item URLs</h4>' + prefToArray(prefs.p_getString("readList")).join('<br />') );
-  	$('#<portlet:namespace/>readHistory').html('<h4>Read Item URLs</h4>' + prefToArray("").join('<br />') );
+  	$('#pid_searchHistory').html(renderSearchList(prefToArray(prefs.p_getString("searchList"))).join(" "));
+  	$('#pid_readHistory').html('<h4>Read Item URLs</h4>' + prefToArray("").join('<br />') );
   	return false;
   }
 
   function clearAllHistory() {
   	prefs.p_set("searchList", ' ');
-  	//prefs.p_set("readList", ' ');
   	updateHistory();
   	return false;
   }
   
 //<![CDATA[
-  // var msg = new gadgets.MiniMessage(__MODULE_ID__);
   $(function() { initialize(); });
-  //]]>
+//]]>
+
   </script>
-  <div id="<portlet:namespace/>search">
-    <div style="display:none" id="<portlet:namespace/>showSearch">New Search</div>
-    <div id="<portlet:namespace/>searchContainer">
-      <div id="<portlet:namespace/>hideSearch">Hide</div>
-      <form id="<portlet:namespace/>search">
+
+  <div id="pid_search">
+    <div style="display:none" id="pid_showSearch">New Search</div>
+    <div id="pid_searchContainer">
+      <div id="pid_hideSearch">Hide</div>
+      <form id="pid_search">
       <div class="demo">
 
 <div class="ui-widget">
 	<label>Enter Search Term: </label>
-	<select style="display: none;" id="combobox">
+	<select style="display: none;" id="pid_combobox">
 		<option value="">Select one...</option>
 		<option value="Music">Music</option>
 		<option value="Games">Games</option>
@@ -683,30 +640,30 @@
 		<option value="Theoretical Physics">Theoretical Physics</option>
 		<option value="Monsters">Monsters</option>
 	</select>
-	<input id="<portlet:namespace/>query" value="" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input ui-widget ui-widget-content ui-corner-left">
+	<input id="pid_query" value="" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input ui-widget ui-widget-content ui-corner-left">
 	<button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right ui-button-icon" title="Show All Items" tabindex="-1" type="button">
 	<span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
 	<span class="ui-button-text">&nbsp;</span>
 	</button>
 </div>
+</form>
 <button id="toggle">Show underlying select</button>
 
 </div><!-- End demo -->
-      <button id="<portlet:namespace/>searchButton" type="button" name="startSearch">Search</button>
-      </form>
+      <button id="pid_searchButton" type="button" name="startSearch">Search</button>
     </div>
-    <div id="<portlet:namespace/>loading" style="display:none"><img src="<%=request.getContextPath()%>/images/ajax-loader.gif" /></div>
+    <div id="pid_loading" style="display:none"><img src="<%=request.getContextPath()%>/images/ajax-loader.gif" /></div>
     <div>
-      <ul style="display:none" id="<portlet:namespace/>results"></ul>
+      <ul style="display:none" id="pid_results"></ul>
     </div>
   </div>
-  <div style="display:none" id="<portlet:namespace/>history">
-    <div id="<portlet:namespace/>refreshHistory" href="#">Show latest history</div>
-    <div id="<portlet:namespace/>clearAllHistory">Clear All History</div>
+  <div style="display:none" id="pid_history">
+    <div id="pid_refreshHistory" href="#">Show latest history</div>
+    <div id="pid_clearAllHistory">Clear All History</div>
     <ul>
       <li class="header">Search History</li>
-      <li><div id="<portlet:namespace/>searchHistory"></div></li>
-      <li style="display:none"><div id="<portlet:namespace/>readHistory"></div></li>
+      <li><div id="pid_searchHistory"></div></li>
+      <li style="display:none"><div id="pid_readHistory"></div></li>
     </ul>
   </div>
 </div>
