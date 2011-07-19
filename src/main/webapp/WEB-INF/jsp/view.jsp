@@ -207,13 +207,13 @@
   media="all" />
 
   <div class="portlet-container" id="pid_main">
-    <script src="rcp_/js/jquery-1.5.1.js" type="text/javascript">
-</script> <script src="rcp_/js/jquery.ui.core.js" type="text/javascript">
-</script> <script src="rcp_/js/jquery.ui.widget.js" type="text/javascript">
-</script> <script src="rcp_/js/jquery.ui.button.js" type="text/javascript">
-</script> <script src="rcp_/js/jquery.ui.position.js" type="text/javascript">
-</script> <script src="rcp_/js/jquery.ui.autocomplete.js" type="text/javascript">
-</script> <script type="text/javascript">
+    <script src="rcp_/js/jquery-1.5.1.js" type="text/javascript"> </script>
+    <script src="rcp_/js/jquery.ui.core.js" type="text/javascript"> </script>
+    <script src="rcp_/js/jquery.ui.widget.js" type="text/javascript"> </script>
+    <script src="rcp_/js/jquery.ui.button.js" type="text/javascript"> </script>
+    <script src="rcp_/js/jquery.ui.position.js" type="text/javascript"> </script>
+    <script src="rcp_/js/jquery.ui.autocomplete.js" type="text/javascript"> </script>
+    <script type="text/javascript">
 //<![CDATA[
         (function( $ ) {
                 $.widget( "ui.combobox", {
