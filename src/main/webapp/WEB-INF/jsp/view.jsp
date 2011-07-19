@@ -203,8 +203,8 @@
   }
   /*]]>*/
   </style>
-  <link rel="stylesheet" type="text/css" href="rcp_/css/jquery-ui-autocomplete.css"
-  media="all" />
+
+  <link rel="stylesheet" type="text/css" href="rcp_/css/jquery-ui-autocomplete.css" media="all" />
 
   <div class="portlet-container" id="pid_main">
     <script src="rcp_/js/jquery-1.5.1.js" type="text/javascript"> </script>
@@ -214,114 +214,6 @@
     <script src="rcp_/js/jquery.ui.position.js" type="text/javascript"> </script>
     <script src="rcp_/js/jquery.ui.autocomplete.js" type="text/javascript"> </script>
     <script type="text/javascript">
-//<![CDATA[
-        (function( $ ) {
-                $.widget( "ui.combobox", {
-                        _create: function() {
-                                var self = this,
-                                        select = this.element.hide(),
-                                        selected = select.children( ":selected" ),
-                                        value = selected.val() ? selected.text() : "";
-                                var input = this.input = $( "<input>" )
-                                        .insertAfter( select )
-                                        .val( value )
-                                        .autocomplete({
-                                                delay: 0,
-                                                minLength: 0,
-                                                source: function( request, response ) {
-                                                        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-                                                        response( select.children( "option" ).map(function() {
-                                                                var text = $( this ).text();
-                                                                if ( this.value && ( !request.term || matcher.test(text) ) )
-                                                                        return {
-                                                                                label: text.replace(
-                                                                                        new RegExp(
-                                                                                                "(?![^&;]+;)(?!<[^<>]*)(" +
-                                                                                                $.ui.autocomplete.escapeRegex(request.term) +
-                                                                                                ")(?![^<>]*>)(?![^&;]+;)", "gi"
-                                                                                        ), "<strong>$1<\/strong>" ),
-                                                                                value: text,
-                                                                                option: this
-                                                                        };
-                                                        }) );
-                                                },
-                                                select: function( event, ui ) {
-                                                        ui.item.option.selected = true;
-                                                        self._trigger( "selected", event, {
-                                                                item: ui.item.option
-                                                        });
-                                                },
-                                                change: function( event, ui ) {
-                                                        if ( !ui.item ) {
-                                                                var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
-                                                                        valid = false;
-                                                                select.children( "option" ).each(function() {
-                                                                        if ( $( this ).text().match( matcher ) ) {
-                                                                                this.selected = valid = true;
-                                                                                return false;
-                                                                        }
-                                                                });
-                                                                if ( !valid ) {
-                                                                        // remove invalid value, as it didn't match anything
-                                                                        $( this ).val( "" );
-                                                                        select.val( "" );
-                                                                        input.data( "autocomplete" ).term = "";
-                                                                        return false;
-                                                                }
-                                                        }
-                                                }
-                                        })
-                                        .addClass( "ui-widget ui-widget-content ui-corner-left" );
-
-                                input.data( "autocomplete" )._renderItem = function( ul, item ) {
-                                        return $( "<li><\/li>" )
-                                                .data( "item.autocomplete", item )
-                                                .append( "<a>" + item.label + "<\/a>" )
-                                                .appendTo( ul );
-                                };
-
-                                this.button = $( "<button type='button'>&nbsp;<\/button>" )
-                                        .attr( "tabIndex", -1 )
-                                        .attr( "title", "Show All Items" )
-                                        .insertAfter( input )
-                                        .button({
-                                                icons: {
-                                                        primary: "ui-icon-triangle-1-s"
-                                                },
-                                                text: false
-                                        })
-                                        .removeClass( "ui-corner-all" )
-                                        .addClass( "ui-corner-right ui-button-icon" )
-                                        .click(function() {
-                                                // close if already visible
-                                                if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
-                                                        input.autocomplete( "close" );
-                                                        return;
-                                                }
-
-                                                // work around a bug (likely same cause as #5265)
-                                                $( this ).blur();
-
-                                                // pass empty string as value to search for, displaying all results
-                                                input.autocomplete( "search", "" );
-                                                input.focus();
-                                        });
-                        },
-
-                        destroy: function() {
-                                this.input.remove();
-                                this.button.remove();
-                                this.element.show();
-                                $.Widget.prototype.destroy.call( this );
-                        }
-                });
-        })( jQuery );
-
-        $(function() {
-                $( "#pid_combobox" ).combobox();
-        });
-    //]]>
-    </script> <script type="text/javascript">
 
     // TODO: need to prefix functions, etc. with portlet namespace or is not jsr286 compliant
 
@@ -329,13 +221,16 @@
     var vivoGetUrl = 'replaced_during_packaging_see_pom.xml';
     var vivoUpdateUrl = 'replaced_during_packaging_see_pom.xml';
 
+    // TODO: populate with configured URL
+    var vivoLinkUrl = 'http://google.com/?q=';
+
     /** http://net.tutsplus.com/tutorials/javascript-ajax/5-ways-to-make-ajax-calls-with-jquery/ */
 
     /** Spinner **/
 
     <div id="pid_loadingDiv">
     LOADING . . .
-    <\/div>
+    </div>
 
     /** TODO: namespace since is portlet, otherwise will get spinner when other portlets calling ajaxStart... http://stackoverflow.com/questions/1191485/how-to-call-ajaxstart-on-specific-ajax-calls/1212728#1212728 */
     $('#pid_loadingDiv')
@@ -361,9 +256,13 @@
           //);
       }
       return false;
-    });
+    };
 
     function initialize() {
+        alert('initialize() called');
+
+        $( "#pid_combobox" ).combobox();
+
         //console.log('starting up!');
 
         // 1. load query text field and backing select with history
@@ -399,35 +298,8 @@
                         saveSearch($("#pid_query").val());
                 }
         });
-        $('#pid_showSearch').click( function() {
-                stopSearchAnimations();
-        });
-        $('#pid_hideSearch').click( function() {
-                $('#pid_searchContainer').hide("slide", {
-                        direction: "up"
-                }, 150, function() {
-                        $('#pid_showSearch').show("slide", {
-                                direction: "up"
-                        }, 150);
-
-                });
-        });
-        $('#pid_refreshHistory').click( function() {
-                updateHistory();
-        });
-        $('#pid_clearAllHistory').click( function() {
-                clearAllHistory();
-        });
-        $('.read_list').live('change', function() {
-                if($(this).is(':checked') && searchReadList($(this).prev().attr('href')) === false) {
-                        $(this).prev().removeClass('unread');
-                        $(this).attr("disabled", true);
-                        // TODO: remove readlist?
-                        //var read_list = prefs.p_getString("readList");
-                        var read_list = 'music';
-                        //prefs.p_set("readList", read_list + '|' +  $(this).prev().attr('href'));
-                }
-        });
+        $('#pid_showSearch').click(function(){$('#pid_searchContainer').slideDown('slow', function(){});});
+        $('#pid_hideSearch').click(function(){$('#pid_searchContainer').slideUp('slow', function(){});});
         $('.recent_search').live('click', function() {
                 //tabs.setSelectedTab(0);
                 executeSearch($(this).html());
@@ -443,7 +315,6 @@
                         }
                 }
         });
-        updateHistory();
     }
 
     function executeSearch(term) {
@@ -452,26 +323,13 @@
     }
 
     function startSearchAnimations() {
-        $('#pid_loading').show("slide", {
-                direction: "up"
-        }, 50);
-        $('#pid_searchContainer').hide("slide", {
-                direction: "up"
-        }, 150, function() {
-                $('#pid_showSearch').show("slide", {
-                        direction: "up"
-                }, 150);
-        });
+        $('#pid_loading').slideUp('slow', function(){});
+        $('#pid_searchContainer').slideUp('slow', function(){});
     }
 
     function stopSearchAnimations() {
-        $('#pid_showSearch').hide("slide", {
-                direction: "up"
-        }, 150, function() {
-                $('#pid_searchContainer').show("slide", {
-                        direction: "up"
-                }, 150);
-        });
+        $('#pid_loading').slideDown('slow', function(){});
+        $('#pid_searchContainer').slideDown('slow', function(){});
     }
 
     function loadData(url) {
@@ -498,7 +356,7 @@
     }
 
     function searchVivo(search) {
-        loadData(settings.endPoint + search + '*');
+        loadData(vivoLinkUrl + search + '*');
     }
 
     function sortResults(searchArray, groups) {
@@ -543,13 +401,15 @@
                         direction: "up"
                 }, 150);
         });
-        var search_terms = prefs.p_getString("searchList");
+        //var search_terms = prefs.p_getString("searchList");
+        var search_terms = 'music|apple';
+        var currentTerm = 'music';
         var searchArray = search_terms.split('|');
         var groups = data.groups;
         var finalArray = sortResults(data.items, groups);
         var dataItems = finalArray.length;
         var finalStr = [];
-        finalStr.push('<li id="pid_results_header">Search Term: <strong>' + settings.currentTerm + '<\/strong> Results: <strong>' + dataItems  + '<\/strong><\/li>');
+        finalStr.push('<li id="pid_results_header">Search Term: <strong>' + currentTerm + '<\/strong> Results: <strong>' + dataItems  + '<\/strong><\/li>');
         for (var i = 0; i < dataItems; i++) {
                 if(finalArray[i].uri !== '#' && finalArray[i].uri !== '#result') {
                         if(!searchReadList(finalArray[i].uri)) {
@@ -568,14 +428,13 @@
         $('#pid_results').html(finalStr.join(" "));
     }
 
-    function prefToArray(pref) {
-        var prefArray = pref.split('|');
+    function pipeDelimitedStringToArray(s) {
+        var sArray = s.split('|');
         var finalArray = [];
-        var prefLength = prefArray.length;
+        var sLength = sArray.length;
         for(var i=0; i<prefLength; i++) {
-                if(prefArray[i] !== " ") {
-                        //alert(prefArray[i].charCodeAt(0));
-                        finalArray.push(prefArray[i]);
+                if(sArray[i] !== " ") {
+                        finalArray.push(sArray[i]);
                 }
         }
         return finalArray;
@@ -585,22 +444,13 @@
         finalHtml = ["<ul>"];
         var listArrayLength = listArray.length;
         for(var i = 0; i < listArrayLength; i++) {
-                finalHtml.push('<li><a class="recent_search" href="' + settings.endPoint + listArray[i] + '*">' + listArray[i] + '<\/li>');
-                console.log("<li>" + listArray[i] + "<\/li>");
+                finalHtml.push('<li><a class="recent_search" href="' + vivoLinkUrl + listArray[i] + '*">' + listArray[i] + '<\/li>');
         }
         finalHtml.push("<\/ul>");
         return finalHtml;
     }
 
-    function updateHistory() {
-        $('#pid_searchHistory').html(renderSearchList(prefToArray(prefs.p_getString("searchList"))).join(" "));
-        $('#pid_readHistory').html('<h4>Read Item URLs<\/h4>' + prefToArray("").join('<br />') );
-        return false;
-    }
-
     function clearAllHistory() {
-        prefs.p_set("searchList", ' ');
-        updateHistory();
         return false;
     }
 
@@ -620,77 +470,48 @@
           Hide
         </div>
 
-        <form id="pid_search">
-          <div class="demo">
-            <div class="ui-widget">
-              <label>Enter Search Term:</label> <select style="display: none;" id=
-              "pid_combobox">
-                <option value="">
-                  Select one...
-                </option>
+        <div class="search_stuff">
+          <div class="ui-widget">
+            <label>Enter Search Term:</label>
+            <select style="display: none;" id="pid_combobox">
+              <option value="">
+                Select one...
+              </option>
 
-                <option value="Music">
-                  Music
-                </option>
+              <option value="Music">
+                Music
+              </option>
 
-                <option value="Games">
-                  Games
-                </option>
+              <option value="Games">
+                Games
+              </option>
 
-                <option value="Basketball">
-                  Basketball
-                </option>
+              <option value="Basketball">
+                Basketball
+              </option>
 
-                <option value="Theoretical Physics">
-                  Theoretical Physics
-                </option>
+              <option value="Theoretical Physics">
+                Theoretical Physics
+              </option>
 
-                <option value="Monsters">
-                  Monsters
-                </option>
-              </select> <input id="pid_query" value="" aria-haspopup="true"
-              aria-autocomplete="list" role="textbox" autocomplete="off" class=
-              "ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" />
-              <button aria-disabled="false" role="button" class=
-              "ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right ui-button-icon"
-              title="Show All Items" tabindex="-1" type="button"> <span class=
-              "ui-button-text">&nbsp;</span></button>
-            </div>
+              <option value="Monsters">
+                Monsters
+              </option>
+            </select>
           </div>
-        </form>
+        </div>
       </div><!-- End demo -->
       <button id="pid_searchButton" type="button" name="startSearch">Search</button>
     </div>
 
-    <div id="pid_loading" style="display:none"><img src=
-    "rcp_/images/ajax-loader.gif" /></div>
+    <div id="pid_loading" style="display:none"><img src="rcp_/images/ajax-loader.gif" /></div>
 
     <div>
       <ul style="display:none" id="pid_results"></ul>
     </div>
   </div>
 
-  <div style="display:none" id="pid_history">
-    <div id="pid_refreshHistory" href="#">
-      Show latest history
-    </div>
-
-    <div id="pid_clearAllHistory">
-      Clear All History
-    </div>
-
-    <ul>
-      <li class="header">Search History</li>
-
-      <li>
-        <div id="pid_searchHistory"></div>
-      </li>
-
-      <li style="display:none">
-        <div id="pid_readHistory"></div>
-      </li>
-    </ul>
-  </div><br />
+<br />
 
   <ul style="z-index: 1; top: 0px; left: 0px; display: none;"
       aria-activedescendant="ui-active-menuitem"
