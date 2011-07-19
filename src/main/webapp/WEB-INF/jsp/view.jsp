@@ -206,10 +206,6 @@
   <link rel="stylesheet" type="text/css" href="rcp_/css/jquery-ui-autocomplete.css"
   media="all" />
 
-  <title></title>
-</head>
-
-<body>
   <div class="portlet-container" id="pid_main">
     <script src="rcp_/js/jquery-1.5.1.js" type="text/javascript">
 </script> <script src="rcp_/js/jquery.ui.core.js" type="text/javascript">
