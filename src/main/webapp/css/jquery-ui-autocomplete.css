@@ -17,7 +17,7 @@
 .ui-button-icon-only { width: 2.2em; }
 button.ui-button-icon-only { width: 2.4em; }
 .ui-button .ui-button-text { display: block; line-height: 1.4; }
-.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text { padding: 0.4em; text-indent: -1e+7px; }
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text { padding: 0.4em; text-indent: 0.07px; }
 .ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon { position: absolute; top: 50%; margin-top: -8px; }
 .ui-button-icon-only .ui-icon { left: 50%; margin-left: -8px; }
 button.ui-button::-moz-focus-inner { border: 0pt none; padding: 0pt; }
