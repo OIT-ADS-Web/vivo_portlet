@@ -692,6 +692,7 @@
     </ul>
   </div><br />
 
-  <ul style="z-index: 1; top: 0px; left: 0px; display: none;" aria-activedescendant=
-  "ui-active-menuitem" role="listbox" class=
-  "ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
+  <ul style="z-index: 1; top: 0px; left: 0px; display: none;"
+      aria-activedescendant="ui-active-menuitem"
+      role="listbox"
+      class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all"></ul>
