@@ -99,17 +99,10 @@ public class VivoController {
                 return;
             }
 
-            Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
-            String userId = MultiportalUserInfoUtilities.getUserId(userInfo);
-            if (userId != null && !"".equals(userId.trim())) {
-                // TODO: we shouldn't supply the object id here, only the userId. fix.
-                vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
-                writer.print("{\"history\": \"" + history + "\"}");
-            }
-            else {
-                LOG.warn("Couldn't update vivo_portlet query history because userId was '" + userId + "'. userInfo map=" + mapToJson((Map) request.getAttribute(PortletRequest.USER_INFO)));
-                writer.print("{\"error\": \"Couldn't update vivo_portlet query history because userId was '" + userId + "'. userInfo map=" + mapToJson((Map) request.getAttribute(PortletRequest.USER_INFO)) + "\")}");
-            }
+            String userId = getUserId(request);
+            // TODO: we shouldn't supply the object id here, only the userId. fix.
+            vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
+            writer.print("{\"history\": \"" + history + "\"}");
         }
         catch (Throwable t) {
             LOG.error("updateHistory in vivo portlet resource request failed", t);
@@ -119,29 +112,35 @@ public class VivoController {
         }
     }
 
+    private String getUserId(ResourceRequest request) {
+        Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
+        String userId = MultiportalUserInfoUtilities.getUserId(userInfo);
+        return userId;
+    }
+
     @ResourceMapping(value = "getHistory")
     public void getHistory(ResourceRequest request, ResourceResponse response)
             throws Exception {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
-            String userId = MultiportalUserInfoUtilities.getUserId(userInfo);
+            String history = "";
 
-            if (userId != null) {
-                // TODO: we shouldn't supply the object id here, only the userId. fix.
-                VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(99);
-                if (queryResult!=null) {
-                    LOG.debug("Got non-null DB query result for vivo portlet getHistory");
-                    String history = queryResult.getHistory();
-                    LOG.debug("Query result's history for vivo portlet getHistory was " + history);
-                    writer.print("{\"history\": \"" + history + "\"}");
+            // TODO: we shouldn't supply the object id here, only the userId. fix.
+            //String userId = getUserId(request);
+            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(99);
+            if (queryResult!=null) {
+                LOG.debug("Got non-null DB query result for vivo portlet getHistory");
+                String historyResult = queryResult.getHistory();
+                LOG.debug("Query result's history for vivo portlet getHistory was " + historyResult);
+                if (historyResult!=null) {
+                    history = historyResult;
                 }
             }
             else {
-                LOG.warn("Couldn't update vivo_portlet query history because userId was '" + userId + "'. userInfo map=" + mapToJson((Map) request.getAttribute(PortletRequest.USER_INFO)));
-                writer.print("{\"error\": \"Couldn't update vivo_portlet query history because userId was '" + userId + "'. userInfo map=" + mapToJson((Map) request.getAttribute(PortletRequest.USER_INFO)) + "\")}");
+                LOG.debug("Got null DB query result for vivo portlet getHistory");
             }
+            writer.print("{\"history\": \"" + history + "\"}");
         }
         catch (Throwable t) {
             LOG.error("updateHistory in vivo portlet resource request failed", t);

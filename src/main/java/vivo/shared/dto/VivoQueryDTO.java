@@ -12,13 +12,14 @@ public class VivoQueryDTO implements java.io.Serializable {
     private static final long serialVersionUID = 2398892972397428398L;
 
     @Id
-    @Column(name = "vivo_query_id")
+    @Column(unique=true, nullable=false, name = "vivo_query_id")
     private long vivoQueryId;
 
-    @Column(name = "user_id", nullable = false, length = 30)
+    // allow null user_id. is needed to store data for testing/development in html outside of the portal (for now)
+    @Column(unique=true, name = "user_id", nullable=true, length = 30)
     private String userId;
 
-    @Column(name = "history", nullable = false, length = 30)
+    @Column(name = "history", nullable = true, length = 30)
     private String history;
 
     public VivoQueryDTO() {

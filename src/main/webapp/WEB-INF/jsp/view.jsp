@@ -49,8 +49,11 @@
     //replaceme2
 
     //<%--portlet resource can only set as JSP variable--%>
-    var getHistoryUrl = '<%=getHistoryUrl%>';
-    var updateHistoryUrl = '<%=updateHistoryUrl%>';
+    //var getHistoryUrl = '<%=getHistoryUrl%>';
+    //var updateHistoryUrl = '<%=updateHistoryUrl%>';
+
+    var getHistoryUrl = 'http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=getHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2';
+    var updateHistoryUrl = 'http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2';
 
     function initialize() {
         //alert('initialize() called');
@@ -59,7 +62,9 @@
               updateHistoryUrl + '&history=success',
               function(json) {
                   //alert('called ' + updateHistoryUrl.toString() + ' with history "success" and got ' + json);
-                  $("#pid_query").val();
+                  console.log(json);
+
+                  $("#pid_query").val(json.history);
               }
         );
 
@@ -67,7 +72,9 @@
               getHistoryUrl,
               function(json) {
                   //alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
-                  $("#pid_query").val(json);
+                  console.log(json);
+
+                  $("#pid_query").val(json.history);
               }
         );
 
@@ -83,7 +90,13 @@
     <option value="">Loading . . .</option>
     </select>
 
+    <p>
     Test URLs that are generated if running as a portlet:<br/>
     <a href="<portlet:resourceURL escapeXml='false' id='info'/>">Test info</a><br/>
     <a href="<portlet:resourceURL escapeXml='false' id='getHistory'/>">Test getHistory</a><br/>
     <a href="<portlet:resourceURL escapeXml='false' id='updateHistory'/>&history=success">Test updateHistory</a><br/>
+
+    Test URLs that are hardcoded and work if portal and portlet is up on localhost:<br/>
+    <a href="http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=info&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2">Test info</a><br/>
+    <a href="http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=getHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2">Test getHistory</a><br/>
+    <a href="http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2&history=success">Test updateHistory</a><br/>
