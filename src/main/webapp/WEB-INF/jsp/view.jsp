@@ -16,6 +16,18 @@
   <!--<%--Do not alter the following line!!!--%>-->
   <!--replaceme1-->
 
+  <!--<%--
+  URLs that can be hardcoded for development are:
+  getHistoryUrl =
+  http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=getHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2
+
+  updateHistoryUrl (add history param to this)=
+  http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2
+
+  Example specifying history
+  http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2&history=music|video|games
+  --%>-->
+
   <style type="text/css">
 /*<![CDATA[*/
 
@@ -43,12 +55,12 @@
     document.write("<br>getHistoryUrl=" + getHistoryUrl + "<br>updateHistoryUrl=" + updateHistoryUrl + "<br>");
 
     function initialize() {
-        alert('initialize() called');
+        //alert('initialize() called');
 
         $.getJSON(
               updateHistoryUrl + '&history=success',
               function(json) {
-                  alert('called ' + updateHistoryUrl.toString() + ' with history "success" and got ' + json);
+                  //alert('called ' + updateHistoryUrl.toString() + ' with history "success" and got ' + json);
                   $("#pid_query").val();
               }
         );
@@ -56,7 +68,7 @@
         $.getJSON(
               getHistoryUrl,
               function(json) {
-                  alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
+                  //alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
                   $("#pid_query").val(json);
               }
         );
