@@ -206,7 +206,7 @@
                         </replacement>
                         <replacement>
                             <token>//replaceme2</token>
-                            <value><![CDATA[<portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/><portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>]]></value>
+                            <value><![CDATA[<portlet:resourceURL escapeXml='false' id='getHistory' var='getHistoryUrl'/><portlet:resourceURL escapeXml='false' id='updateHistory' var='updateHistoryUrl'/>]]></value>
                         </replacement>
                         <replacement>
                             <token><![CDATA[<!--replaceme1-->]]></token>

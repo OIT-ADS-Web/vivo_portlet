@@ -39,11 +39,11 @@ public class VivoQueryServiceImpl implements VivoQueryService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception {
+    public void updateVivoQuery(long vivoQueryId, String userId, String history) throws Exception {
         VivoQueryDTO vivoQueryDTO = vivoQueryDAO.findById(vivoQueryId);
         if (vivoQueryDTO != null) {
             vivoQueryDTO.setUserId(userId);
-            vivoQueryDTO.setVivoQueryString(queryString);
+            vivoQueryDTO.setHistory(history);
         }
     }
 

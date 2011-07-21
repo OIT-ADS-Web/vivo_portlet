@@ -18,8 +18,8 @@ public class VivoQueryDTO implements java.io.Serializable {
     @Column(name = "user_id", nullable = false, length = 30)
     private String userId;
 
-    @Column(name = "query", nullable = false, length = 30)
-    private String vivoQueryString;
+    @Column(name = "history", nullable = false, length = 30)
+    private String history;
 
     public VivoQueryDTO() {
     }
@@ -28,10 +28,10 @@ public class VivoQueryDTO implements java.io.Serializable {
         this.vivoQueryId = vivoQueryId;
     }
 
-    public VivoQueryDTO(long vivoQueryId, String userId, String vivoQueryString) {
+    public VivoQueryDTO(long vivoQueryId, String userId, String history) {
         this.vivoQueryId = vivoQueryId;
         this.userId = userId;
-        this.vivoQueryString = vivoQueryString;
+        this.history = history;
     }
 
     public long getVivoQueryId() {
@@ -50,11 +50,11 @@ public class VivoQueryDTO implements java.io.Serializable {
         this.userId = userId;
     }
 
-    public String getVivoQueryString() {
-        return vivoQueryString;
+    public String getHistory() {
+        return history;
     }
 
-    public void setVivoQueryString(String vivoQueryString) {
-        this.vivoQueryString = vivoQueryString;
+    public void setHistory(String history) {
+        this.history = history;
     }
 }

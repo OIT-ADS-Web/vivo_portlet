@@ -37,26 +37,26 @@
     //replaceme2
 
     //<%--portlet resource can only set as JSP variable--%>
-    var vivoGetUrl = '<%=vivoGetUrl%>';
-    var vivoUpdateUrl = '<%=vivoUpdateUrl%>';
+    var getHistoryUrl = '<%=getHistoryUrl%>';
+    var updateHistoryUrl = '<%=updateHistoryUrl%>';
 
-    document.write("<br>vivoGetUrl=" + vivoGetUrl + "<br>vivoUpdateUrl=" + vivoUpdateUrl + "<br>");
+    document.write("<br>getHistoryUrl=" + getHistoryUrl + "<br>updateHistoryUrl=" + updateHistoryUrl + "<br>");
 
     function initialize() {
         alert('initialize() called');
 
         $.getJSON(
-              vivoUpdateUrl + '&key=success',
+              updateHistoryUrl + '&history=success',
               function(json) {
-                  alert('called ' + vivoUpdateUrl.toString() + ' with key "successfully read portlet persisted value. now move to next step." and got ' + json);
+                  alert('called ' + updateHistoryUrl.toString() + ' with history "success" and got ' + json);
                   $("#pid_query").val();
               }
         );
 
         $.getJSON(
-              vivoGetUrl,
+              getHistoryUrl,
               function(json) {
-                  alert('called ' + vivoGetUrl.toString() + ' and got ' + json);
+                  alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
                   $("#pid_query").val(json);
               }
         );
@@ -73,3 +73,7 @@
     <option value="">Loading . . .</option>
     </select>
 
+    Test URLs that are generated if running as a portlet:<br/>
+    <a href="<portlet:resourceURL escapeXml='false' id='info'/>">Test info</a><br/>
+    <a href="<portlet:resourceURL escapeXml='false' id='getHistory'/>">Test getHistory</a><br/>
+    <a href="<portlet:resourceURL escapeXml='false' id='updateHistory'/>&history=success">Test updateHistory</a><br/>
