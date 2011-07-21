@@ -52,8 +52,6 @@
     var getHistoryUrl = '<%=getHistoryUrl%>';
     var updateHistoryUrl = '<%=updateHistoryUrl%>';
 
-    document.write("<br>getHistoryUrl=" + getHistoryUrl + "<br>updateHistoryUrl=" + updateHistoryUrl + "<br>");
-
     function initialize() {
         //alert('initialize() called');
 
