@@ -195,12 +195,24 @@
                     <ignoreMissingFile>false</ignoreMissingFile>
                     <file>target/${portletName}/WEB-INF/jsp/view.jsp</file>
                     <regex>false</regex>
-                    <variableTokenValueMap>
-                        pid_=<![CDATA[<portlet:namespace/>]]>,
-                        rcp_=<![CDATA[<%=request.getContextPath()%>]]>,
-                        //replaceme2=<![CDATA[<portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/><portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>]]>,
-                        <![CDATA[<!--replaceme1-->]]>=<![CDATA[<portlet:defineObjects/><portlet:actionURL var="actionURL" portletMode="view"/>]]>
-                    </variableTokenValueMap>
+                    <replacements>
+                        <replacement>
+                            <token>pid_</token>
+                            <value><![CDATA[<portlet:namespace/>]]></value>
+                        </replacement>
+                        <replacement>
+                            <token>rcp_</token>
+                            <value><![CDATA[<%=request.getContextPath()%>]]></value>
+                        </replacement>
+                        <replacement>
+                            <token>//replaceme2</token>
+                            <value><![CDATA[<portlet:resourceURL escapeXml='false' id='vivoGet' var='vivoGetUrl'/><portlet:resourceURL escapeXml='false' id='vivoUpdate' var='vivoUpdateUrl'/>]]></value>
+                        </replacement>
+                        <replacement>
+                            <token><![CDATA[<!--replaceme1-->]]></token>
+                            <value><![CDATA[<portlet:defineObjects/><portlet:actionURL var="actionURL" portletMode="view"/>]]></value>
+                        </replacement>
+                    </replacements>
                 </configuration>
             </plugin>
         </plugins>
