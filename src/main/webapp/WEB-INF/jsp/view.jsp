@@ -13,6 +13,7 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 -->
+  <!--<%--Do not alter the following line!!!--%>-->
   <!--replaceme1-->
 
   <style type="text/css">
@@ -32,28 +33,30 @@
 
     // TODO: need to prefix functions, etc. with portlet namespace or is not jsr286 compliant
 
-    // The following two variable are automatically replaced as part of Maven war packaging via the next replacement.
-    var vivoGetUrl = 'overridden-during-packaging';
-    var vivoUpdateUrl = 'overridden-during-packaging';
-
+    //<%--Do not alter the following line!!!--%>
     //replaceme2
+
+    //<%--portlet resource can only set as JSP variable--%>
+    var vivoGetUrl = '<%=vivoGetUrl%>';
+    var vivoUpdateUrl = '<%=vivoUpdateUrl%>';
+
+    document.write("<br>vivoGetUrl=" + vivoGetUrl + "<br>vivoUpdateUrl=" + vivoUpdateUrl + "<br>");
 
     function initialize() {
         alert('initialize() called');
 
         $.getJSON(
-              "<%=renderResponse.encodeURL(vivoUpdateUrl.toString())%>",
-              {key: 'successfully read portlet persisted value. now move to next step.'},
+              vivoUpdateUrl + '&key=success',
               function(json) {
-                  alert('setting key');
+                  alert('called ' + vivoUpdateUrl.toString() + ' with key "successfully read portlet persisted value. now move to next step." and got ' + json);
                   $("#pid_query").val();
               }
         );
 
         $.getJSON(
-              "<%=renderResponse.encodeURL(vivoGetUrl.toString())%>",
+              vivoGetUrl,
               function(json) {
-                  alert('getting key');
+                  alert('called ' + vivoGetUrl.toString() + ' and got ' + json);
                   $("#pid_query").val(json);
               }
         );
