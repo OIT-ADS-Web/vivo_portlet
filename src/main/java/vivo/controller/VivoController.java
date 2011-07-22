@@ -8,7 +8,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import sun.rmi.runtime.Log;
 import vivo.shared.dto.VivoQueryDTO;
 import vivo.shared.services.VivoQueryService;
 import vivo.util.MultiportalUserInfoUtilities;
@@ -77,13 +76,96 @@ public class VivoController {
     public void info(ResourceRequest request, ResourceResponse response)
             throws Exception {
         PrintWriter writer = response.getWriter();
-        String jvmUsedMemory = "" + Runtime.getRuntime().totalMemory() + "/" + Runtime.getRuntime().maxMemory();
         writer.print("{" +
                 "\"vivoUrl\": \"" + vivoUrl + "\"" +
                 ", \"totalMemory\": \"" + Runtime.getRuntime().totalMemory() + "\"" +
                 ", \"maxMemory\": \"" + Runtime.getRuntime().maxMemory() + "\"" +
                 ", " + mapToJson((Map) request.getAttribute(PortletRequest.USER_INFO)) +
                 "}");
+    }
+
+    @ResourceMapping(value = "addHistory")
+    public void addHistory(ResourceRequest request, ResourceResponse response)
+            throws Exception {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            String singleQuery = request.getParameter("history");
+            if (singleQuery==null) {
+                LOG.info("Must supply request parameter 'history' to addHistory in vivo portlet resource request");
+                writer.print("{\"error\": \"missing request param called: history\"}");
+                return;
+            }
+
+            String userId = getUserId(request);
+            
+            // TODO: we shouldn't supply the object id here, only the userId. fix.
+            String previousHistory = ""; 
+            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(99);
+            if (queryResult!=null) {
+                LOG.debug("Got non-null DB query result for getting existing history in vivo portlet addHistory");
+                String historyResult = queryResult.getHistory();
+                LOG.debug("Query result's existing history in vivo portlet addHistory was " + historyResult);
+                if (historyResult!=null) {
+                    previousHistory = historyResult;
+                }
+            }
+
+            String history = getHistory(singleQuery, previousHistory);
+
+            // TODO: we shouldn't supply the object id here, only the userId. fix.
+            vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
+            writer.print("{\"history\": \"" + history + "\"}");
+        }
+        catch (Throwable t) {
+            LOG.error("addHistory in vivo portlet resource request failed", t);
+            if (writer != null) {
+                writer.print("{\"error\": \"addHistory in vivo portlet resource request failed: " + t + "\"}");
+            }
+        }
+    }
+
+    private String getHistory(String singleQuery, String previousHistory) {
+	    if (previousHistory==null || "".equals(previousHistory)) {
+		    return singleQuery;
+	    }
+	    else if (singleQuery==null || "".equals(singleQuery)) {
+		    return previousHistory;
+		}
+	
+	    StringBuffer sb = new StringBuffer(singleQuery);
+	    String[] sArray = previousHistory.split("|");
+	    for (int i=0; i<sArray.length; i++) {
+		    String s = sArray[i];
+		    // only keep history that doesn't contain the new query
+		    if (s!=null && !"".equals(s)) {
+			    if (!s.equals(singleQuery)) {
+				    sb.append('|');
+				    sb.append(s);
+			    }
+		    }
+	    }
+	    return sb.toString();
+    }
+
+    @ResourceMapping(value = "clearHistory")
+    public void clearHistory(ResourceRequest request, ResourceResponse response)
+            throws Exception {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+
+            String userId = getUserId(request);
+            // TODO: we shouldn't supply the object id here, only the userId. fix.
+            vivoQueryService.saveOrUpdateVivoQuery(99, userId, "");
+            writer.print("{\"history\": \"\"}");
+        }
+        catch (Throwable t) {
+            LOG.error("clearHistory in vivo portlet resource request failed", t);
+            if (writer != null) {
+                writer.print("{\"error\": \"clearHistory in vivo portlet resource request failed: " + t + "\"}");
+            }
+        }
     }
 
     @ResourceMapping(value = "updateHistory")
