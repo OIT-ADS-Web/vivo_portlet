@@ -111,7 +111,7 @@ public class VivoController {
                 }
             }
 
-            String history = getHistory(singleQuery, previousHistory);
+            String history = minifyingAppendToPipeDelimitedString(singleQuery, previousHistory);
 
             // TODO: we shouldn't supply the object id here, only the userId. fix.
             vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
@@ -125,7 +125,7 @@ public class VivoController {
         }
     }
 
-    private String getHistory(String singleQuery, String previousHistory) {
+    private String minifyingAppendToPipeDelimitedString(String singleQuery, String previousHistory) {
 	    if (previousHistory==null || "".equals(previousHistory)) {
 		    return singleQuery;
 	    }
@@ -134,7 +134,7 @@ public class VivoController {
 		}
 	
 	    StringBuffer sb = new StringBuffer(singleQuery);
-	    String[] sArray = previousHistory.split("|");
+	    String[] sArray = previousHistory.split("\\|");
 	    for (int i=0; i<sArray.length; i++) {
 		    String s = sArray[i];
 		    // only keep history that doesn't contain the new query
