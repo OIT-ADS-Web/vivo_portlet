@@ -245,9 +245,11 @@
     var updateHistoryUrl = 'http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2';
 
     function updateInterface(json) {
-        //console.log(json);                  
+        alert('updateInterface() called');
+        //console.log(json);
         if (json && json.history) {                      
             // remove old select options
+            alert('clearing #pid_history');
             $('#pid_history')
                 .find('option')
                 .remove()
@@ -257,6 +259,7 @@
             
             // set new data
             var history = json.history;
+            alert('setting new history ' + history);
             var historyArray = json.key.split('|');
             if (historyArray.length > 0) {
                 $("#pid_query").val(historyArray.pop());
@@ -272,40 +275,46 @@
                 }
             }
         }
+        alert('updateInterface complete');
     }
     
     function search() {
+        alert('search() called');
         if ($("#pid_query").val() !== "") {
             $.getJSON(
                   updateHistoryUrl + '&history=' + $("#pid_query").val,
                   function(json) {
-                      //alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
+                      alert('called ' + updateHistoryUrl.toString() + ' with history ' + $("#pid_query").val + ' and got ' + json);
                       updateInterface(json);
                   }
             );
         }
+        alert('search complete');
     }
     
     function initialize() {
-        //alert('initialize() called');
+        alert('initialize() called. getHistoryUrl=' + getHistoryUrl);
         $.getJSON(
               getHistoryUrl,
               function(json) {
-                  //alert('called ' + updateHistoryUrl.toString() + ' with history "success" and got ' + json);
+                  alert('called ' + getHistoryUrl.toString() + ' and got ' + json);
                   updateInterface(json);
               }
         );
         
         $('#pid_searchButton').click( function() {
+                alert('user clicked search');
                 search();
         });
         
         $('#pid_query').bind('keydown', function(e) {
                 if((e.keyCode ? e.keyCode : e.which) == 13) { // 13 = user clicked enter/return key in search field
+                        alert('user entered query');
                         search();
                 }
         });
 
+        alert('initialize complete');
         return false;
     }
 
