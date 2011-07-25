@@ -142,10 +142,7 @@ var Scroll = {
         });
     }
 }
-function scrollTo(elementId, offset) {
 
-
-}
 var Search = {
     execute : function(term) {
         if(term.length > 0) {
