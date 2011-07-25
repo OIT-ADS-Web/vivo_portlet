@@ -248,6 +248,8 @@ SearchHistory.prototype.initialize = function() {
            
         }
 
+    } else {
+         Behaviors.history_button_hide();
     }
 
    this.updateHistory();
@@ -266,6 +268,7 @@ SearchHistory.prototype.saveSearch = function(search) {
     } else {
         Prefs.set("searchList", testResult.patchedArray.join('|'));
     }
+    Behaviors.history_button_show();
     settings.currentTerm = search;
      
 }
@@ -292,7 +295,8 @@ SearchHistory.prototype.renderSearchList = function(listArray) {
 SearchHistory.prototype.clearAllHistory = function() {
     Prefs.set("searchList", ' ');
   
-
+    Behaviors.history_button_hide();
+        Behaviors.history_hide();
     this.updateHistory();
     return false;
 }
@@ -347,6 +351,17 @@ var Behaviors = {
                     direction : "up"
              }, 90);
             }
+    },
+    history_button_hide : function() {
+        
+        if($("#refreshHistory").is(':visible')) {
+            $("#refreshHistory").css('display', 'none');
+        }
+    },
+    history_button_show : function() {
+        if(!$("#refreshHistory").is(':visible')) {
+            $("#refreshHistory").css('display', 'block');
+        }
     },
     history : function() {
          userHistory.updateHistory();
