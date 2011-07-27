@@ -216,14 +216,15 @@ Results.prototype.html  = function(sorted_data) {
     html.push(Template.results_header(settings.currentTerm, count));
     
     for(var i = 0; i < count; i++) {
+        var unique_name = 'pid_' + sorted_data[i].name;
         if(sorted_data[i].uri !== '#' && sorted_data[i].uri !== '#result') {
-            html.push(Template.results_item(sorted_data[i].uri, sorted_data[i].name));
+            html.push(Template.results_item(sorted_data[i].uri, unique_name));
         } else {
             if(sorted_data[i].uri === '#result') {
-                html.push(Template.results_group_summary(sorted_data[i].name));
+                html.push(Template.results_group_summary(unique_name));
                 
             } else {
-                html.push(Template.results_group_header(sorted_data[i].name));
+                html.push(Template.results_group_header(unique_name));
             }
 
         }
