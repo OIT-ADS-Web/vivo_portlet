@@ -68,7 +68,7 @@ var Template = {
         return '<li class="result_summary">' + name + '</li>';
     },
     results_group_header : function(name) {
-        return '<li id="' + name + '" class="group">' + name + '</li>';
+        return '<li id="pid_' + name + '" class="group">' + name + '</li>';
     },
     results_submenu : function(name, count) {
         return '<li><a href="#' + name + '">' + name + ': ' + count + '</a></li>';
@@ -216,15 +216,16 @@ Results.prototype.html  = function(sorted_data) {
     html.push(Template.results_header(settings.currentTerm, count));
     
     for(var i = 0; i < count; i++) {
-        var unique_name = 'pid_' + sorted_data[i].name;
-        if(sorted_data[i].uri !== '#' && sorted_data[i].uri !== '#result') {
-            html.push(Template.results_item(sorted_data[i].uri, unique_name));
+        var sorted_data_uri = sorted_data[i].uri;
+        var sorted_data_name = sorted_data[i].name;
+        if(sorted_data_uri !== '#' && sorted_data_uri !== '#result') {
+            html.push(Template.results_item(sorted_data_uri, sorted_data_name));
         } else {
-            if(sorted_data[i].uri === '#result') {
-                html.push(Template.results_group_summary(unique_name));
+            if(sorted_data_uri === '#result') {
+                html.push(Template.results_group_summary(sorted_data_name));
                 
             } else {
-                html.push(Template.results_group_header(unique_name));
+                html.push(Template.results_group_header(sorted_data_name));
             }
 
         }
