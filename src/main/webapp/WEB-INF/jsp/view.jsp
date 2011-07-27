@@ -28,8 +28,8 @@
   http://localhost:8080/web/guest/home?p_p_id=1_WAR_vivo&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=updateHistory&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=2&history=music|video|games
   --%>-->
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="rcp_/js/jquery-1.4.3.min.js" type="text/javascript"></script>
+        <script src="rcp_/js/jquery-ui-1.8.6.min.js" type="text/javascript"></script>
         
         <script type="text/javascript">
         // var msg = new gadgets.MiniMessage(__MODULE_ID__);
@@ -43,7 +43,7 @@
  */
 
 //var prefs = new _IG_Prefs();
-var userHistory = new SearchHistory("#searchHistory");
+var userHistory = new SearchHistory("#pid_searchHistory");
 var results = new Results();
 
 var settings = {
@@ -59,7 +59,7 @@ function initialize() {
 
 var Template = {
     results_header : function(term, count) {
-        return '<li id="results_header"><strong>' + term + '</strong></li><li>Showing <strong>' + count + '</strong> results</li>';
+        return '<li id="pid_results_header"><strong>' + term + '</strong></li><li>Showing <strong>' + count + '</strong> results</li>';
     },
     results_item : function(uri, name) {
         return '<li><a target="_blank" href="' + uri + '">' + name + '</a></li>';
@@ -167,7 +167,7 @@ function Results() {
     this.groups = {};
 }
 Results.prototype.sort = function(searchArray) {
-    var resultsString = ['<ul id="result_summary_container">'];
+    var resultsString = ['<ul id="pid_result_summary_container">'];
     var searchArrayLength = searchArray.length;
     var filteredResults = {};
     if($.isEmptyObject(this.groups)) {
@@ -207,7 +207,7 @@ Results.prototype.render = function(data) {
 
     results.groups = data.groups;
    
-    $('#results').html(this.html(results.sort(data.items)).join(" "));
+    $('#pid_results').html(this.html(results.sort(data.items)).join(" "));
 }
 Results.prototype.html  = function(sorted_data) {
     var html = [];
@@ -306,28 +306,28 @@ SearchHistory.prototype.clearAllHistory = function() {
 var Behaviors = {
     initialize : function() {
         that = this;
-        $('#searchButton').click(function() {
+        $('#pid_searchButton').click(function() {
             that.search();
     
         });
-        $('#refreshHistory').click(function() {
+        $('#pid_refreshHistory').click(function() {
            that.history();
     
         });
-        $('#clearAllHistory').click(function() {
+        $('#pid_clearAllHistory').click(function() {
            that.clear_history();
         });
         
-        $('#results').delegate("#result_summary_container li a", "click", function() {
+        $('#pid_results').delegate("#pid_result_summary_container li a", "click", function() {
      
             Scroll.to($(this).attr("href"), 0);
             return false;
         });
-        $('#searchHistory').delegate("li a", "click", function() {
+        $('#pid_searchHistory').delegate("li a", "click", function() {
             return that.select_history_item(this);
         });
         
-        $('#search input').bind({      
+        $('#pid_search input').bind({
             'keydown' : function(e) {
                 that.keyboard(e);
             },
@@ -345,32 +345,32 @@ var Behaviors = {
         }
     },
     history_hide : function() {
-          if($('#history').is(":visible")) {
-              $('#recent_img').attr("src","http://gadgets-dev.oit.duke.edu/vivo_social/recent.gif");
-             $('#history').hide("slide", {
+          if($('#pid_history').is(":visible")) {
+              $('#pid_recent_img').attr("src","rcp_/images/recent.gif");
+             $('#pid_history').hide("slide", {
                     direction : "up"
              }, 90);
             }
     },
     history_button_hide : function() {
         
-        if($("#refreshHistory").is(':visible')) {
-            $("#refreshHistory").css('display', 'none');
+        if($("#pid_refreshHistory").is(':visible')) {
+            $("#pid_refreshHistory").css('display', 'none');
         }
     },
     history_button_show : function() {
-        if(!$("#refreshHistory").is(':visible')) {
-            $("#refreshHistory").css('display', 'block');
+        if(!$("#pid_refreshHistory").is(':visible')) {
+            $("#pid_refreshHistory").css('display', 'block');
         }
     },
     history : function() {
          userHistory.updateHistory();
 
-        if($('#history').is(":visible")) {
+        if($('#pid_history').is(":visible")) {
            this.history_hide();
         } else {
-            $('#recent_img').attr("src","http://gadgets-dev.oit.duke.edu/vivo_social/recent-on.gif");
-            $('#history').show("slide", {
+            $('#pid_recent_img').attr("src","rcp_/images/recent-on.gif");
+            $('#pid_history').show("slide", {
                 direction : "up"
             }, 90);
         }
@@ -394,16 +394,16 @@ var Behaviors = {
         }
     },
     start_loading: function() {
-        $('#loading').show("slide", {
+        $('#pid_loading').show("slide", {
             direction : "up"
         }, 50);
     },
     stop_loading: function() {
-     $('#loading').hide("slide", {
+     $('#pid_loading').hide("slide", {
         direction : "up"
          }, 150, function() {
-        if(!$('#results').is(":visible")) {
-            $('#results').show("slide", {
+        if(!$('#pid_results').is(":visible")) {
+            $('#pid_results').show("slide", {
                 direction : "up"
             }, 150);
         }
@@ -422,7 +422,7 @@ function vivoSearchResult(data) {
         
         </script>
         <style type="text/css">
-        #result_summary_container li a {
+        #pid_result_summary_container li a {
           display:inline-block
         }
         p {padding:2px;margin:0 }
@@ -434,7 +434,7 @@ function vivoSearchResult(data) {
         h4{ padding:0; margin:0; font-size:1.2em; }
 
 
-        #hideSearch{
+        #pid_hideSearch{
           padding:2px;
           margin:1px;
           float:right;
@@ -442,12 +442,12 @@ function vivoSearchResult(data) {
           border:solid 1px #FFF
         }
     
-        #searchContainer {
+        #pid_searchContainer {
             margin-bottom:2px;
             padding:7px
         }
 
-        #loading {
+        #pid_loading {
            position:absolute;
            top:70px;
            left:30px;
@@ -459,10 +459,10 @@ function vivoSearchResult(data) {
          a:visited {color:#2485AE}
          a:hover { text-decoration:none;text-decoration:underline }
          
-        #main { background-color: #F3F3F0; font-size:.8em}
+        #pid_main { background-color: #F3F3F0; font-size:.8em}
         
         
-        #refreshHistory {
+        #pid_refreshHistory {
            
            color:#FFF;
            padding-left:3px;
@@ -472,7 +472,7 @@ function vivoSearchResult(data) {
            top:18px;
            left:156px;
         }
-        #history {
+        #pid_history {
               position:absolute;
               top:35px;
               left:14px;
@@ -489,11 +489,11 @@ function vivoSearchResult(data) {
       -o-box-shadow: 2px 2px 2px #333;
       box-shadow: 2px 2px 2px #333;
           }
-          #history li {
+          #pid_history li {
             
             padding:8px
           }
-        #clearAllHistory {
+        #pid_clearAllHistory {
           border:solid 1px #000;
           padding:8px;
           cursor:pointer;
@@ -501,16 +501,16 @@ function vivoSearchResult(data) {
           font-weight:bold;
           color:#FFF
         }
-        #results_header, .header, #search {
+        #pid_results_header, .header, #pid_search {
             font-size:1.1em;
-            background-image: url('http://gadgets-dev.oit.duke.edu/vivo_social/headerbg.gif');
+            background-image: url('rcp_/images/headerbg.gif');
             color:#FFF;
             -moz-border-radius: 4px;
             border-radius: 4px;
 
         }
         .tablib_unselected {
-            background-image: url('http://gadgets-dev.oit.duke.edu/vivo_social/taboff.gif');
+            background-image: url('rcp_/images/taboff.gif');
             padding: 3px 0px;
             background-color: #85C13D;
             /*  border: 1px solid #273d6c;
@@ -521,7 +521,7 @@ function vivoSearchResult(data) {
             cursor: pointer;
         }
         .tablib_selected {
-            background-image: url('http://gadgets-dev.oit.duke.edu/vivo_social/tab.gif');
+            background-image: url('rcp_/images/tab.gif');
             padding: 3px 0px;
             /* background-color: #273d6c;*/
             /* border: 1px solid #000;*/
@@ -542,7 +542,7 @@ function vivoSearchResult(data) {
             font-size:.9em;
             border-bottom:solid 1px #CCC
         }
-        #result_summary_container li {
+        #pid_result_summary_container li {
             display:inline;
             padding:3px;
             border:none
@@ -566,17 +566,17 @@ function vivoSearchResult(data) {
               padding:2px
         }
         </style>
-      <div id="main">
+      <div id="pid_main">
             
-        <div id="search">
-          <div id="refreshHistory" href="#"><img id="recent_img" src="http://gadgets-dev.oit.duke.edu/vivo_social/recent.gif" /> </div>
-        <div id="searchContainer">
+        <div id="pid_search">
+          <div id="pid_refreshHistory" href="#"><img id="pid_recent_img" src="rcp_/images/recent.gif" /> </div>
+        <div id="pid_searchContainer">
         
 
 
         <input type="text" name="searchTerm" />
 
-        <button id="searchButton" type="button" name="startSearch">Search</button>
+        <button id="pid_searchButton" type="button" name="startSearch">Search</button>
     
         </div>
         
@@ -586,25 +586,25 @@ function vivoSearchResult(data) {
         </div>
             
 
-              <div style="display:none" id="history">
+              <div style="display:none" id="pid_history">
        
             
-        <ul id="searchHistory">
+        <ul id="pid_searchHistory">
         
   
        
         </ul>
- <div id="clearAllHistory">Clear All History</div>
+ <div id="pid_clearAllHistory">Clear All History</div>
         </div>
-          <div id="result_body">
+          <div id="pid_result_body">
             
             
-            <ul style="display:none" id="results"></ul>
+            <ul style="display:none" id="pid_results"></ul>
         </div>
-        <div id="loading" style="display:none">
-                <img src="http://gadgets-dev.oit.duke.edu/vivo_social/ajax-loader.gif" />
+        <div id="pid_loading" style="display:none">
+                <img src="rcp_/images/ajax-loader.gif" />
             </div>
-        <div style="display:none" id="visi">visualization</div>
-        <div style="display:none" id="follow"><ul><li class="header">Currently Following</li><li>You are not following anyone.</li></ul></div>
+        <div style="display:none" id="pid_visi">visualization</div>
+        <div style="display:none" id="pid_follow"><ul><li class="header">Currently Following</li><li>You are not following anyone.</li></ul></div>
         
         </div>
