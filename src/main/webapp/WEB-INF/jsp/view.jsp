@@ -32,6 +32,9 @@
         <script src="rcp_/js/jquery-ui-1.8.6.min.js" type="text/javascript"></script>
         
         <script type="text/javascript">
+        // Do not remove the following line!
+        //replaceme2
+
         // var msg = new gadgets.MiniMessage(__MODULE_ID__);
 
         alert("anonymous function called");
@@ -86,11 +89,31 @@
                 },
                 set : function (pref, new_val) {
                    // prefs.set(pref, new_val);
-                   this.history[pref] = new_val;
+                   //this.history[pref] = new_val;
+
+                   // like a synchronous $.getJSON call
+                   $.ajax({
+                       type: 'POST',
+                       url: "<%=renderResponse.encodeURL(updateHistoryUrl.toString())%>?history=" + new_val,
+                       dataType: 'json',
+                       success: function() { },
+                       data: {},
+                       async: false
+                   });
                 },
                 getString : function(pref) {
-                   // return prefs.getString(pref);
-                    return this.history[pref];
+                    //return prefs.getString(pref);
+                    //return this.history[pref];
+                    return $.parseJSON($.ajax(
+                            {
+                               type: 'GET',
+                               url: "<%=renderResponse.encodeURL(getHistoryUrl.toString())%>",
+                               dataType: 'json',
+                               success: function() { },
+                               data: {},
+                               async: false
+                            }
+                        ).responseText);
                    }
         }
 
