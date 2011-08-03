@@ -88,47 +88,86 @@
                      searchList: "cat|dog|obesity|food|pharm"
                 },
                 set : function (pref, new_val) {
-                   // prefs.set(pref, new_val);
-                   //this.history[pref] = new_val;
+                   try {
+                       alert("attempting to set history with <%=renderResponse.encodeURL(updateHistoryUrl.toString())%> with data {'history' = '" + new_val + "'}");
+                       // prefs.set(pref, new_val);
+                       this.history[pref] = new_val;
 
-                   // like a synchronous $.getJSON call
-                   $.ajax({
-                       type: 'POST',
-                       url: "<%=renderResponse.encodeURL(updateHistoryUrl.toString())%>?history=" + new_val,
-                       dataType: 'json',
-                       success: function() { },
-                       data: {},
-                       async: false
-                   });
+                       // like a synchronous $.getJSON call
+                       $.ajax({
+                           type: 'POST',
+                           url: "<%=renderResponse.encodeURL(updateHistoryUrl.toString())%>",
+                           dataType: 'json',
+                           success: function() {
+                               alert("updateHistory call to portlet did not fail!");
+                           },
+                           error: function(xhr, ajaxOptions, thrownError) {
+                               alert("updateHistory call error: " + xhr.statusText);
+                           },
+                           data: {'history': new_val},
+                           async: false
+                       });
+                       alert("request sent");
+                   } catch (err) {
+                       alert("Error in Prefs.set: " + err);
+                   }
                 },
                 getString : function(pref) {
-                    //return prefs.getString(pref);
-                    //return this.history[pref];
-                    return $.parseJSON($.ajax(
-                            {
-                               type: 'GET',
-                               url: "<%=renderResponse.encodeURL(getHistoryUrl.toString())%>",
-                               dataType: 'json',
-                               success: function() { },
-                               data: {},
-                               async: false
-                            }
-                        ).responseText);
-                   }
+                    var historyResult = "";
+                    try {
+                        //return prefs.getString(pref);
+                        alert("attempting to get history from '<%=renderResponse.encodeURL(getHistoryUrl.toString())%>'");
+                        historyResult = $.parseJSON($.ajax(
+                                {
+                                   type: 'GET',
+                                   url: "<%=renderResponse.encodeURL(getHistoryUrl.toString())%>",
+                                   dataType: 'json',
+                                   success: function() {
+                                       alert("getHistory call to portlet did not fail!");
+                                   },
+                                   error: function(xhr, ajaxOptions, thrownError) {
+                                       alert("getHistory call error: " + xhr.statusText);
+                                   },
+                                   data: {},
+                                   async: false
+                                }
+                            ).history);
+
+                        alert("$.parseJSON result was '" + historyResult + "'");
+
+                        if (!historyResult) {
+                          alert("using backup method this.history[" + pref + "]");
+                          historyResult = this.history[pref];
+                          alert("this.history[" + pref + "] returned '" + historyResult + "'");
+                        }
+                    } catch (err) {
+                       alert("Error in Prefs.getString: " + err);
+                    }
+
+                    if (!historyResult) {
+                       alert("neither <%=renderResponse.encodeURL(getHistoryUrl.toString())%> nor this.history[" + pref + "] returned a result!");
+                       historyResult = "";
+                    }
+
+                    return historyResult;
+                }
         }
 
         var PrefHandler = {
 
             to_array : function(pref) {
-                var prefArray = pref.split('|');
                 var finalArray = [];
-                var prefLength = prefArray.length;
-                for(var i = 0; i < prefLength; i++) {
-                    if(prefArray[i] !== " ") {
-                        finalArray.push(prefArray[i]);
+                try {
+                    var prefArray = pref.split('|');
+                    var prefLength = prefArray.length;
+                    for(var i = 0; i < prefLength; i++) {
+                        if(prefArray[i] !== " ") {
+                            finalArray.push(prefArray[i]);
+                        }
                     }
+                } catch (err) {
+                    alert("Error in PrefHandler.to_array: " + err);
                 }
-
                 return finalArray;
             },
             scan : function(term, searchArray) {
