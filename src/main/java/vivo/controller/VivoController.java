@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import vivo.VivoConstants;
 import vivo.shared.dto.VivoQueryDTO;
 import vivo.shared.services.VivoQueryService;
 import vivo.util.MultiportalUserInfoUtilities;
@@ -179,6 +180,10 @@ public class VivoController {
                 LOG.info("Must supply request parameter 'history' to updateHistory in vivo portlet resource request");
                 writer.print("{\"error\": \"missing request param called: history\"}");
                 return;
+            }
+            else if (history.length() > VivoConstants.MAX_HISTORY_LENGTH) {
+                // TODO: this partially truncates past queries
+                history = history.substring(history.length() - VivoConstants.MAX_HISTORY_LENGTH);
             }
 
             String userId = getUserId(request);

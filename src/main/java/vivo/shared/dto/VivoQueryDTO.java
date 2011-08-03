@@ -1,23 +1,26 @@
 package vivo.shared.dto;
 
+import vivo.VivoConstants;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "VIVO_QUERY")
+@SequenceGenerator(allocationSize = 1, name = "S_vivo_query_id", sequenceName = "S_vivo_query_id")
 public class VivoQueryDTO implements java.io.Serializable {
 
     private static final long serialVersionUID = 2398892972397428398L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "S_vivo_query_id")
     @Column(unique=true, nullable=false, name = "vivo_query_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // or GenerationType.AUTO
-    private Long vivoQueryId;
+    private long vivoQueryId;
 
     // allow null user_id. is needed to store data for testing/development in html outside of the portal (for now)
-    @Column(unique=true, name = "user_id", nullable=true, length = 30)
+    @Column(unique=true, name = "user_id", nullable=true, length = 512)
     private String userId;
 
-    @Column(name = "history", nullable = true, length = 30)
+    @Column(name = "history", nullable = true, length = VivoConstants.MAX_HISTORY_LENGTH)
     private String history;
 
     public VivoQueryDTO() {
@@ -28,7 +31,7 @@ public class VivoQueryDTO implements java.io.Serializable {
         this.history = history;
     }
 
-    public Long getVivoQueryId() {
+    public long getVivoQueryId() {
         return vivoQueryId;
     }
 

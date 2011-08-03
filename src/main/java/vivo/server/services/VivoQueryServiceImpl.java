@@ -31,6 +31,10 @@ public class VivoQueryServiceImpl implements VivoQueryService {
         List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
         if (results != null && results.size()>0) {
             result = results.get(0);
+            System.out.println("findVivoQuery(" + userId + ") returned history '" + result.getHistory() + "'");
+        }
+        else {
+            System.out.println("findVivoQuery(" + userId + ") returned null/empty list");
         }
         return result;
     }
@@ -40,6 +44,7 @@ public class VivoQueryServiceImpl implements VivoQueryService {
         List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
         if (results != null) {
             for (int i=0; i<results.size(); i++) {
+                System.out.println("Deleting from DB: userId '" + results.get(i).getUserId() + "' history '" + results.get(i).getHistory() + "'");
                 vivoQueryDAO.remove(results.get(i));
             }
         }
@@ -47,8 +52,13 @@ public class VivoQueryServiceImpl implements VivoQueryService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveOrUpdateVivoQuery(String userId, String history) throws Exception {
-        VivoQueryDTO vivoQueryDTO = new VivoQueryDTO(userId, history);
-        vivoQueryDAO.merge(vivoQueryDTO);
+        System.out.println("Updating DB with userId '" + userId + "' history '" + history + "'");
+        VivoQueryDTO vivoQueryDTO = findVivoQuery(userId);
+        if(vivoQueryDTO == null) {
+            vivoQueryDTO = new VivoQueryDTO();
+            vivoQueryDAO.persist(vivoQueryDTO);
+        } else {
+            vivoQueryDTO.setHistory(history);
+        }
     }
-
 }
