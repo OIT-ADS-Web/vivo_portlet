@@ -117,7 +117,7 @@
                     try {
                         //return prefs.getString(pref);
                         alert("attempting to get history from '<%=renderResponse.encodeURL(getHistoryUrl.toString())%>'");
-                        historyResult = $.parseJSON($.ajax(
+                        var ajaxResult = $.ajax(
                                 {
                                    type: 'GET',
                                    url: "<%=renderResponse.encodeURL(getHistoryUrl.toString())%>",
@@ -131,9 +131,25 @@
                                    data: {},
                                    async: false
                                 }
-                            ).history);
-
-                        alert("$.parseJSON result was '" + historyResult + "'");
+                            );
+                        alert("ajaxResult was '" + ajaxResult + "'");
+                        alert("ajaxResult.responseText was '" + ajaxResult.responseText + "'");
+                        var historyResultObj = $.parseJSON(ajaxResult.responseText);
+                        alert("$.parseJSON(...) result was '" + historyResultObj + "'");
+                        if (historyResultObj) {
+                            historyResult = historyResultObj.history;
+                            if (historyResult) {
+                                alert("historyResult was '" + historyResult + "'");
+                            }
+                            else if (historyResultObj.error)
+                            {
+                                alert("error was '" + historyResultObj.error + "'");
+                            }
+                            else
+                            {
+                                alert("bad json returned: " + JSON.stringify(historyResultObj));
+                            }
+                        }
 
                         if (!historyResult) {
                           alert("using backup method this.history[" + pref + "]");
