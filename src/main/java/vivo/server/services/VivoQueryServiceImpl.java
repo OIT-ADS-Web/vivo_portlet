@@ -10,6 +10,7 @@ import vivo.shared.services.VivoQueryService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.List;
 
 @Service("vivoQueryService")
 public class VivoQueryServiceImpl implements VivoQueryService {
@@ -25,39 +26,28 @@ public class VivoQueryServiceImpl implements VivoQueryService {
     public void destroy() {
     }
 
-    public VivoQueryDTO findVivoQuery(long vivoQueryId) {
-        return vivoQueryDAO.findById(vivoQueryId);
+    public VivoQueryDTO findVivoQuery(String userId) {
+        VivoQueryDTO result = null;
+        List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
+        if (results != null && results.size()>0) {
+            result = results.get(0);
+        }
+        return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception {
-        VivoQueryDTO vivoQueryDTO = vivoQueryDAO.findById(vivoQueryId);
-        if (vivoQueryDTO == null) {
-            vivoQueryDTO = new VivoQueryDTO(vivoQueryId, userId, queryString);
-            vivoQueryDAO.persist(vivoQueryDTO);
+    public void deleteVivoQuery(String userId) throws Exception {
+        List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
+        if (results != null) {
+            for (int i=0; i<results.size(); i++) {
+                vivoQueryDAO.remove(results.get(i));
+            }
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateVivoQuery(long vivoQueryId, String userId, String history) throws Exception {
-        VivoQueryDTO vivoQueryDTO = vivoQueryDAO.findById(vivoQueryId);
-        if (vivoQueryDTO != null) {
-            vivoQueryDTO.setUserId(userId);
-            vivoQueryDTO.setHistory(history);
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteVivoQuery(long vivoQueryId) throws Exception {
-        VivoQueryDTO vivoQueryDTO = vivoQueryDAO.findById(vivoQueryId);
-        if (vivoQueryDTO != null) {
-            vivoQueryDAO.remove(vivoQueryDTO);
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveOrUpdateVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception {
-        VivoQueryDTO vivoQueryDTO = new VivoQueryDTO(vivoQueryId, userId, queryString);
+    public void saveOrUpdateVivoQuery(String userId, String history) throws Exception {
+        VivoQueryDTO vivoQueryDTO = new VivoQueryDTO(userId, history);
         vivoQueryDAO.merge(vivoQueryDTO);
     }
 

@@ -1,9 +1,6 @@
 package vivo.shared.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "VIVO_QUERY")
@@ -13,7 +10,8 @@ public class VivoQueryDTO implements java.io.Serializable {
 
     @Id
     @Column(unique=true, nullable=false, name = "vivo_query_id")
-    private long vivoQueryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // or GenerationType.AUTO
+    private Long vivoQueryId;
 
     // allow null user_id. is needed to store data for testing/development in html outside of the portal (for now)
     @Column(unique=true, name = "user_id", nullable=true, length = 30)
@@ -25,21 +23,16 @@ public class VivoQueryDTO implements java.io.Serializable {
     public VivoQueryDTO() {
     }
 
-    public VivoQueryDTO(int vivoQueryId) {
-        this.vivoQueryId = vivoQueryId;
-    }
-
-    public VivoQueryDTO(long vivoQueryId, String userId, String history) {
-        this.vivoQueryId = vivoQueryId;
+    public VivoQueryDTO(String userId, String history) {
         this.userId = userId;
         this.history = history;
     }
 
-    public long getVivoQueryId() {
+    public Long getVivoQueryId() {
         return vivoQueryId;
     }
 
-    public void setVivoQueryId(long vivoQueryId) {
+    public void setVivoQueryId(Long vivoQueryId) {
         this.vivoQueryId = vivoQueryId;
     }
 

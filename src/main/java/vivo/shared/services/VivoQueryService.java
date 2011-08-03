@@ -7,14 +7,10 @@ import vivo.shared.dto.VivoQueryDTO;
 @RemoteServiceRelativePath("springGwtServices/vivoQueryService")
 public interface VivoQueryService extends RemoteService {
 
-    public VivoQueryDTO findVivoQuery(long vivoQueryId);
+    public VivoQueryDTO findVivoQuery(String userId);
 
-    public void saveVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception;
+    public void saveOrUpdateVivoQuery(String userId, String queryString) throws Exception;
 
-    public void updateVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception;
-
-    public void saveOrUpdateVivoQuery(long vivoQueryId, String userId, String queryString) throws Exception;
-
-    public void deleteVivoQuery(long vivoQueryId) throws Exception;
+    public void deleteVivoQuery(String userId) throws Exception;
 
 }

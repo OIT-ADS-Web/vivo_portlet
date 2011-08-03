@@ -101,7 +101,7 @@ public class VivoController {
             
             // TODO: we shouldn't supply the object id here, only the userId. fix.
             String previousHistory = ""; 
-            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(99);
+            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(userId);
             if (queryResult!=null) {
                 LOG.debug("Got non-null DB query result for getting existing history in vivo portlet addHistory");
                 String historyResult = queryResult.getHistory();
@@ -114,7 +114,7 @@ public class VivoController {
             String history = minifyingAppendToPipeDelimitedString(singleQuery, previousHistory);
 
             // TODO: we shouldn't supply the object id here, only the userId. fix.
-            vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
+            vivoQueryService.saveOrUpdateVivoQuery(userId, history);
             writer.print("{\"history\": \"" + history + "\"}");
         }
         catch (Throwable t) {
@@ -157,7 +157,7 @@ public class VivoController {
 
             String userId = getUserId(request);
             // TODO: we shouldn't supply the object id here, only the userId. fix.
-            vivoQueryService.saveOrUpdateVivoQuery(99, userId, "");
+            vivoQueryService.saveOrUpdateVivoQuery(userId, "");
             writer.print("{\"history\": \"\"}");
         }
         catch (Throwable t) {
@@ -183,7 +183,7 @@ public class VivoController {
 
             String userId = getUserId(request);
             // TODO: we shouldn't supply the object id here, only the userId. fix.
-            vivoQueryService.saveOrUpdateVivoQuery(99, userId, history);
+            vivoQueryService.saveOrUpdateVivoQuery(userId, history);
             writer.print("{\"history\": \"" + history + "\"}");
         }
         catch (Throwable t) {
@@ -209,8 +209,8 @@ public class VivoController {
             String history = "";
 
             // TODO: we shouldn't supply the object id here, only the userId. fix.
-            //String userId = getUserId(request);
-            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(99);
+            String userId = getUserId(request);
+            VivoQueryDTO queryResult = vivoQueryService.findVivoQuery(userId);
             if (queryResult!=null) {
                 LOG.debug("Got non-null DB query result for vivo portlet getHistory");
                 String historyResult = queryResult.getHistory();
