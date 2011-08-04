@@ -136,12 +136,12 @@
                         alert("ajaxResult.responseText was '" + ajaxResult.responseText + "'");
                         var historyResultObj = $.parseJSON(ajaxResult.responseText);
                         alert("$.parseJSON(...) result was '" + historyResultObj + "'");
-                        if (historyResultObj) {
+                        if (historyResultObj !== null) {
                             historyResult = historyResultObj.history;
-                            if (historyResult) {
+                            if (historyResult !== null) {
                                 alert("historyResult was '" + historyResult + "'");
                             }
-                            else if (historyResultObj.error)
+                            else if (historyResultObj.error !== null)
                             {
                                 alert("error was '" + historyResultObj.error + "'");
                             }
@@ -151,7 +151,7 @@
                             }
                         }
 
-                        if (!historyResult) {
+                        if (historyResult === null) {
                           alert("using backup method this.history[" + pref + "]");
                           historyResult = this.history[pref];
                           alert("this.history[" + pref + "] returned '" + historyResult + "'");
@@ -160,7 +160,7 @@
                        alert("Error in Prefs.getString: " + err);
                     }
 
-                    if (!historyResult) {
+                    if (historyResult === null) {
                        alert("neither <%=renderResponse.encodeURL(getHistoryUrl.toString())%> nor this.history[" + pref + "] returned a result!");
                        historyResult = "";
                     }
