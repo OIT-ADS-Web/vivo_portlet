@@ -21,6 +21,6 @@ public class VivoQueryDAO extends JpaDAO<Long, VivoQueryDTO> {
     }
 
     public List<VivoQueryDTO> findByUserId(String userId) {
-        return (List<VivoQueryDTO>)getJpaTemplate().find("select q from " + entityClass.getName() + " q where q.userId = ?", userId);
+        return (List<VivoQueryDTO>)getJpaTemplate().find("select q from " + entityClass.getName() + " q where q.userId = ?1", userId);
     }
 }
