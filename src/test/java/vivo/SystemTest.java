@@ -29,7 +29,7 @@ public class SystemTest extends AbstractDependencyInjectionSpringContextTests {
         String sampleHistory = "test|sample|query";
         assertTrue("There should be nothing coming back from DB before history is created", vivoQueryServiceImpl.findVivoQuery(userId) == null);
         vivoQueryServiceImpl.saveOrUpdateVivoQuery(userId, sampleHistory);
-        assertEquals("Didn't return history expected.", vivoQueryServiceImpl.findVivoQuery(userId), sampleHistory);
+        assertEquals("Didn't return history expected.", sampleHistory, vivoQueryServiceImpl.findVivoQuery(userId));
         vivoQueryServiceImpl.deleteVivoQuery(userId);
         assertTrue("After deletion, there should be nothing coming back from DB", vivoQueryServiceImpl.findVivoQuery(userId) == null);
     }
