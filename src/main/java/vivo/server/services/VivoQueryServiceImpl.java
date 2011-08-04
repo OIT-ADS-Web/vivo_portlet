@@ -27,26 +27,25 @@ public class VivoQueryServiceImpl implements VivoQueryService {
     }
 
     public VivoQueryDTO findVivoQuery(String userId) {
-        VivoQueryDTO result = null;
-        List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
-        if (results != null && results.size()>0) {
-            result = results.get(0);
+        VivoQueryDTO result = vivoQueryDAO.findByUserId(userId);
+        if (result != null) {
             System.out.println("findVivoQuery(" + userId + ") returned history '" + result.getHistory() + "'");
         }
         else {
-            System.out.println("findVivoQuery(" + userId + ") returned null/empty list");
+            System.out.println("findVivoQuery(" + userId + ") returned null");
         }
         return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteVivoQuery(String userId) throws Exception {
-        List<VivoQueryDTO> results = vivoQueryDAO.findByUserId(userId);
-        if (results != null) {
-            for (int i=0; i<results.size(); i++) {
-                System.out.println("Deleting from DB: userId '" + results.get(i).getUserId() + "' history '" + results.get(i).getHistory() + "'");
-                vivoQueryDAO.remove(results.get(i));
-            }
+        VivoQueryDTO result = vivoQueryDAO.findByUserId(userId);
+        if (result != null) {
+            System.out.println("deleting vivo query for userId '" + userId + "'");
+            vivoQueryDAO.remove(result);
+        }
+        else {
+            System.out.println("no vivo query to delete for userId '" + userId + "'");
         }
     }
 
