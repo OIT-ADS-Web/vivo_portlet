@@ -51,9 +51,9 @@
         };
 
         function initialize() {
-            alert("initialize() called");
+            //alert("initialize() called");
             userHistory.initialize();
-            alert("userHistory.initialize() called");
+            //alert("userHistory.initialize() called");
             Search.execute(settings.currentTerm);
             Behaviors.initialize();
         }
@@ -116,7 +116,7 @@
                     var historyResult = "";
                     try {
                         //return prefs.getString(pref);
-                        alert("attempting to get history from '<%=renderResponse.encodeURL(getHistoryUrl.toString())%>'");
+                        //alert("attempting to get history from '<%=renderResponse.encodeURL(getHistoryUrl.toString())%>'");
                         var ajaxResult = $.ajax(
                                 {
                                    type: 'GET',
@@ -124,6 +124,7 @@
                                    dataType: 'json',
                                    success: function() {
                                        alert("getHistory call to portlet did not fail!");
+                                       // TODO: right here set the title
                                    },
                                    error: function(xhr, ajaxOptions, thrownError) {
                                        alert("getHistory call error: " + xhr.statusText);
@@ -132,14 +133,14 @@
                                    async: false
                                 }
                             );
-                        alert("ajaxResult was '" + ajaxResult + "'");
-                        alert("ajaxResult.responseText was '" + ajaxResult.responseText + "'");
+                        //alert("ajaxResult was '" + ajaxResult + "'");
+                        //alert("ajaxResult.responseText was '" + ajaxResult.responseText + "'");
                         var historyResultObj = $.parseJSON(ajaxResult.responseText);
-                        alert("$.parseJSON(...) result was '" + historyResultObj + "'");
+                        //alert("$.parseJSON(...) result was '" + historyResultObj + "'");
                         if (historyResultObj !== null) {
                             historyResult = historyResultObj.history;
                             if (historyResult !== null) {
-                                alert("historyResult was '" + historyResult + "'");
+                                //alert("historyResult was '" + historyResult + "'");
                             }
                             else if (historyResultObj.error !== null)
                             {
@@ -152,19 +153,20 @@
                         }
 
                         if (historyResult === null) {
-                          alert("using backup method this.history[" + pref + "]");
+                          //alert("using backup method this.history[" + pref + "]");
                           historyResult = this.history[pref];
-                          alert("this.history[" + pref + "] returned '" + historyResult + "'");
+                          //alert("this.history[" + pref + "] returned '" + historyResult + "'");
                         }
                     } catch (err) {
                        alert("Error in Prefs.getString: " + err);
                     }
 
                     if (historyResult === null) {
-                       alert("neither <%=renderResponse.encodeURL(getHistoryUrl.toString())%> nor this.history[" + pref + "] returned a result!");
+                       //alert("neither <%=renderResponse.encodeURL(getHistoryUrl.toString())%> nor this.history[" + pref + "] returned a result!");
                        historyResult = "";
                     }
 
+                    alert("Pref.getString(...)=" + historyResult);
                     return historyResult;
                 }
         }
@@ -283,9 +285,9 @@
 
             results.groups = data.groups;
 
-            $('#pid_results').html(this.html(results.sort(data.items)).join(" "));
+            $('#pid_results').html(this.renderHtml(results.sort(data.items)).join(" "));
         }
-        Results.prototype.html  = function(sorted_data) {
+        Results.prototype.renderHtml = function(sorted_data) {
             var html = [];
             var count = sorted_data.length;
 
@@ -316,17 +318,19 @@
         }
 
         SearchHistory.prototype.initialize = function() {
-            var searchTermsArray = PrefHandler.to_array(Prefs.getString("searchList"));
+            var searchList = Prefs.getString("searchList");
+            alert("in SearchHistory.prototype.initialize. searchList=" + searchList);
+            var searchTermsArray = PrefHandler.to_array(searchList);
                if(searchTermsArray.length > 0) {
-            var lastSearch = searchTermsArray.pop();
-
-                if(lastSearch !== "") {
-
-                    settings.currentTerm = lastSearch;
-
+                alert("have search terms!");
+                var lastSearch = searchTermsArray.pop();
+                if(lastSearch === null) {
+                    lastSearch = "";
                 }
+                settings.currentTerm = lastSearch;
 
             } else {
+                 alert("NO search terms!");
                  Behaviors.history_button_hide();
             }
 
@@ -346,6 +350,7 @@
             } else {
                 Prefs.set("searchList", testResult.patchedArray.join('|'));
             }
+            alert("SHOWING history button");
             Behaviors.history_button_show();
             settings.currentTerm = search;
 
