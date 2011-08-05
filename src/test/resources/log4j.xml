@@ -10,13 +10,14 @@
   </appender>
 
   <!-- log4jdbc option  log the jdbc results as a table -->
+
   <logger name="jdbc.resultsettable" additivity="false">
     <level value="info" />
     <appender-ref ref="console-log4jdbc" />
   </logger>
 
   <root>
-    <priority value ="debug" />
+    <priority value="info" />
     <appender-ref ref="console" />
   </root>
 

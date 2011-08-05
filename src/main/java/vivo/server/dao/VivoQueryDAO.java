@@ -25,13 +25,24 @@ public class VivoQueryDAO {
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
         em.persist(vivoQueryDTO);
+        em.flush();
+        em.getTransaction().commit();
+    }
+
+    public void save(VivoQueryDTO vivoQueryDTO) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(vivoQueryDTO);
+        em.flush();
         em.getTransaction().commit();
     }
 
     public void remove(VivoQueryDTO vivoQueryDTO) {
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(vivoQueryDTO);
+        // remove reference, or you get: java.lang.IllegalArgumentException: Removing a detached instance vivo.shared.dto.VivoQueryDTO#1
+        em.remove(em.getReference(VivoQueryDTO.class, vivoQueryDTO.getVivoQueryId()));
+        em.flush();
         em.getTransaction().commit();
     }
 

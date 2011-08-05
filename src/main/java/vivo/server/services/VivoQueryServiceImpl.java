@@ -54,10 +54,11 @@ public class VivoQueryServiceImpl implements VivoQueryService {
         System.out.println("Updating DB with userId '" + userId + "' history '" + history + "'");
         VivoQueryDTO vivoQueryDTO = findVivoQuery(userId);
         if(vivoQueryDTO == null) {
-            vivoQueryDTO = new VivoQueryDTO();
+            vivoQueryDTO = new VivoQueryDTO(userId, history);
             vivoQueryDAO.persist(vivoQueryDTO);
         } else {
             vivoQueryDTO.setHistory(history);
+            vivoQueryDAO.save(vivoQueryDTO);
         }
     }
 }
