@@ -17,7 +17,8 @@ _UNDER CONSTRUCTION! READ INSTRUCTIONS CAREFULLY. ALL MAY NOT BE FUNCTIONAL YET.
 
 Releases - **please right-click to download**
 
-* [2011-06-03 - current - search not working][rel2011-06-03]
+* [2011-08-08 - current - working with hardcoded service url. Tested w/Liferay 6.0.6 in Firefox 5.0.1 and Chrome 13.0 in OS X 10.6.][rel2011-08-08]
+* [2011-06-03 - search not working][rel2011-06-03]
 * [2011-05-26 - working search but no persistence][rel2011-05-26]
 
 ### Configuration
@@ -26,18 +27,11 @@ Modify WEB-INF/classes/vivo.properties to set the vivoUrl like:
 
       vivoUrl=http://vivo.example.com/widgets/search.jsonp?query=
 
-Modify META-INF/persistence.xml to change to using your favorite database (it uses HSQL in-memory only DB by default, which means data is not saved on restart of the portal.)
+Modify META-INF/persistence.xml to change to using your favorite database (it uses H2 in-memory-only DB by default, which means data is not saved on restart of the portal.)
 
 ### Adding the Portlet
 
-In Liferay 6.0.6, login and go to Add->More...->Sample->Vivo->Add. Note if you click on the test params and click back, you may need to refresh the page to see the portlet. This seems to be a Liferay thing.
-
-### Release History
-
-Informal development releases:
-
-* 2011-06-03 - current - search not working
-* 2011-05-26 - working search but no persistence
+In Liferay 6.0.6, login and go to Add->More...->Social->Vivo->Add. If you are not logged-in, history is not stored, but search still works.
 
 ### License
 
@@ -47,4 +41,5 @@ Copyright (c) 2011 Duke University, released under the [MIT license][lic].
 [liferayportletdevelopersetup]: http://www.liferay.com/documentation/liferay-portal/6.0/development/-/ai/initial-set-8
 [rel2011-05-26]: http://dukepass.oit.duke.edu/vivo_portlet/dist/2011-05-26-working/vivo.war
 [rel2011-06-03]: http://dukepass.oit.duke.edu/vivo_portlet/dist/2011-06-03-not-working/vivo.war
+[rel2011-08-08]: http://dukepass.oit.duke.edu/vivo_portlet/dist/2011-08-08/vivo.war
 [lic]: http://github.com/adsweb/vivo_portlet/blob/master/LICENSE
