@@ -19,9 +19,9 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>${portletDisplayName}</title>
-			<short-title>${portletDisplayName}</short-title>
-			<keywords>${portletDisplayName}</keywords>
+			<title>VIVO</title>
+			<short-title>VIVO</short-title>
+			<keywords>VIVO</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

@@ -37,7 +37,7 @@
 
         // var msg = new gadgets.MiniMessage(__MODULE_ID__);
 
-        alert("anonymous function called");
+        //alert("anonymous function called");
 
         /**
          * @author Jeremy Bandini
@@ -72,7 +72,7 @@
                 return '<li id="pid_' + name + '" class="group">' + name + '</li>';
             },
             results_submenu : function(name, count) {
-                return '<li><a href="#' + name + '">' + name + ': ' + count + '</a></li>';
+                return '<li><a href="#pid_' + name + '">' + name + ': ' + count + '</a></li>';
             },
             history_menu : function(url, term) {
                 return '<li><a class="recent_search" href="' + url + term + '*">' + term + '</a></li>'
@@ -89,7 +89,7 @@
                 },
                 set : function (pref, new_val) {
                    try {
-                       alert("attempting to set history with <%=renderResponse.encodeURL(updateHistoryUrl.toString())%> with data {'history' = '" + new_val + "'}");
+                       //alert("attempting to set history with <%=renderResponse.encodeURL(updateHistoryUrl.toString())%> with data {'history' = '" + new_val + "'}");
                        // prefs.set(pref, new_val);
                        this.history[pref] = new_val;
 
@@ -99,15 +99,15 @@
                            url: "<%=renderResponse.encodeURL(updateHistoryUrl.toString())%>",
                            dataType: 'json',
                            success: function() {
-                               alert("updateHistory call to portlet did not fail!");
+                               //alert("updateHistory call to portlet did not fail!");
                            },
                            error: function(xhr, ajaxOptions, thrownError) {
-                               alert("updateHistory call error: " + xhr.statusText);
+                               alert("There was a problem contacting the server. Please wait and try refreshing the page. " + xhr.statusText);
                            },
                            data: {'history': new_val},
                            async: false
                        });
-                       alert("request sent");
+                       //alert("request sent");
                    } catch (err) {
                        alert("Error in Prefs.set: " + err);
                    }
@@ -123,11 +123,11 @@
                                    url: "<%=renderResponse.encodeURL(getHistoryUrl.toString())%>",
                                    dataType: 'json',
                                    success: function() {
-                                       alert("getHistory call to portlet did not fail!");
+                                       //alert("getHistory call to portlet did not fail!");
                                        // TODO: right here set the title
                                    },
                                    error: function(xhr, ajaxOptions, thrownError) {
-                                       alert("getHistory call error: " + xhr.statusText);
+                                       alert("There was a problem contacting the server. Please wait and try refreshing the page. " + xhr.statusText);
                                    },
                                    data: {},
                                    async: false
@@ -166,7 +166,7 @@
                        historyResult = "";
                     }
 
-                    alert("Pref.getString(...)=" + historyResult);
+                    //alert("Pref.getString(...)=" + historyResult);
                     return historyResult;
                 }
         }
@@ -291,7 +291,7 @@
             var html = [];
             var count = sorted_data.length;
 
-            html.push(Template.results_header(settings.currentTerm, count));
+            html.push(Template.results_header($("#pid_searchTerm").val(), count));
 
             for(var i = 0; i < count; i++) {
                 var sorted_data_uri = sorted_data[i].uri;
@@ -319,10 +319,10 @@
 
         SearchHistory.prototype.initialize = function() {
             var searchList = Prefs.getString("searchList");
-            alert("in SearchHistory.prototype.initialize. searchList=" + searchList);
+            //alert("in SearchHistory.prototype.initialize. searchList=" + searchList);
             var searchTermsArray = PrefHandler.to_array(searchList);
                if(searchTermsArray.length > 0) {
-                alert("have search terms!");
+                //alert("have search terms!");
                 var lastSearch = searchTermsArray.pop();
                 if(lastSearch === null) {
                     lastSearch = "";
@@ -330,7 +330,7 @@
                 settings.currentTerm = lastSearch;
 
             } else {
-                 alert("NO search terms!");
+                 //alert("NO search terms!");
                  Behaviors.history_button_hide();
             }
 
@@ -350,7 +350,7 @@
             } else {
                 Prefs.set("searchList", testResult.patchedArray.join('|'));
             }
-            alert("SHOWING history button");
+            //alert("SHOWING history button");
             Behaviors.history_button_show();
             settings.currentTerm = search;
 
@@ -364,14 +364,11 @@
         SearchHistory.prototype.renderSearchList = function(listArray) {
             finalHtml = [];
             var listArrayLength = listArray.length;
-            for(var i = 0; i < listArrayLength; i++) {
+            for(var i = listArrayLength; i >= 0; i--) {
                 if(listArray[i]) {
                     finalHtml.push(Template.history_menu(settings.endPoint, listArray[i]));
-
                 }
-
             }
-            // finalHtml.push("</ul>");
 
             return finalHtml;
         }
@@ -384,7 +381,7 @@
             return false;
         }
 
-            // Bevaviors
+        // Behaviors
 
         var Behaviors = {
             initialize : function() {
@@ -542,43 +539,44 @@
         
         
         #pid_refreshHistory {
-           
-           color:#FFF;
-           padding-left:3px;
-          
-           cursor:pointer;
-           position:absolute;
-           top:18px;
-           left:156px;
+            background-color: #EEEEEE;
+            color: #FFFFFF;
+            cursor: pointer;
+            float: left;
+            padding-top: 5px;
+            /* float: right; */
+            /* color:#FFF; */
+            /* padding-left:3px; */
+            /* cursor:pointer; */
+            /* position:absolute; */
+            /* top:18px; */
+            /* left:156px; */
         }
         #pid_history {
-              position:absolute;
-              top:35px;
-              left:14px;
-                /*  left: 50%;
-                margin-left: -70px; */
-              width:150px;
-              background-color:#FFF;
-              padding:6px;        
-              -moz-border-radius: 2px;
-              border-radius: 2px;
-              border:solid 2px #000;
-                  -moz-box-shadow: 2px 2px 2px #333;
-      -webkit-box-shadow: 2px 2px 2px #333;
-      -o-box-shadow: 2px 2px 2px #333;
-      box-shadow: 2px 2px 2px #333;
-          }
-          #pid_history li {
-            
+            position:relative;
+            top:-9px;
+            left:4px;
+            width:196px;
+            background-color:#FFF;
+            padding:0;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            border:solid 2px #000;
+            -moz-box-shadow: 2px 2px 2px #333;
+            -webkit-box-shadow: 2px 2px 2px #333;
+            -o-box-shadow: 2px 2px 2px #333;
+            box-shadow: 2px 2px 2px #333;
+        }
+        #pid_history li {
             padding:8px
-          }
+        }
         #pid_clearAllHistory {
-          border:solid 1px #000;
-          padding:8px;
-          cursor:pointer;
-          background-color:#2485AE;
-          font-weight:bold;
-          color:#FFF
+            border:solid 1px #000;
+            padding:8px;
+            cursor:pointer;
+            background-color:#2485AE;
+            font-weight:bold;
+            color:#FFF
         }
         #pid_results_header, .header, #pid_search {
             font-size:1.1em;
@@ -648,36 +646,25 @@
       <div id="pid_main">
             
         <div id="pid_search">
-          <div id="pid_refreshHistory" href="#"><img id="pid_recent_img" src="rcp_/images/recent.gif" /> </div>
+
         <div id="pid_searchContainer">
         
+        <input id="pid_searchTerm" type="text" name="searchTerm" />
 
-
-        <input type="text" name="searchTerm" />
+        <div id="pid_refreshHistory" href="#"><img id="pid_recent_img" src="rcp_/images/recent.gif" /> </div>
 
         <button id="pid_searchButton" type="button" name="startSearch">Search</button>
     
         </div>
-        
 
-
-    
+        <div style="display:none" id="pid_history">
+            <ul id="pid_searchHistory"></ul>
+            <div id="pid_clearAllHistory">Clear All History</div>
         </div>
-            
 
-              <div style="display:none" id="pid_history">
-       
-            
-        <ul id="pid_searchHistory">
-        
-  
-       
-        </ul>
- <div id="pid_clearAllHistory">Clear All History</div>
         </div>
-          <div id="pid_result_body">
-            
-            
+
+        <div id="pid_result_body">
             <ul style="display:none" id="pid_results"></ul>
         </div>
         <div id="pid_loading" style="display:none">
