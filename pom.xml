@@ -227,6 +227,10 @@
                             <value><![CDATA[<%=request.getContextPath()%>]]></value>
                         </replacement>
                         <replacement>
+                            <token>config_vivo_url</token>
+                            <value><![CDATA[<c:out value="${vivoUrl}"/>]]></value>
+                        </replacement>
+                        <replacement>
                             <token>//replaceme2</token>
                             <value><![CDATA[<portlet:resourceURL escapeXml='false' id='addHistory' var='addHistoryUrl'/><portlet:resourceURL escapeXml='false' id='clearHistory' var='clearHistoryUrl'/><portlet:resourceURL escapeXml='false' id='getHistory' var='getHistoryUrl'/><portlet:resourceURL escapeXml='false' id='updateHistory' var='updateHistoryUrl'/>]]></value>
                         </replacement>

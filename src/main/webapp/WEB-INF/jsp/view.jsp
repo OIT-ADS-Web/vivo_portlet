@@ -47,7 +47,7 @@
 
         var settings = {
             currentTerm : '',
-            endPoint : 'http://scholars-test.oit.duke.edu/widgets/search.jsonp?query='
+            endPoint : 'config_vivo_url' // replaced with JSP code to pull from vivoUrl config. see pom.xml.
         };
 
         function initialize() {
